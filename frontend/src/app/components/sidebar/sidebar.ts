@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Auth } from '../../services/auth';
+import { Subscription } from 'rxjs';
 
 interface Subcategory {
   name: string;
@@ -62,9 +64,44 @@ export class Sidebar {
   ];
 
   activeLink: string = '';
+  currentUser: any = null;
+  isAdminMenuOpen = false;
+  private authSub: Subscription = new Subscription();
+
+  adminOptions = [
+    { name: 'Historial de ventas', link: '/admin/historial-ventas' },
+    { name: 'Crear usuario', link: '/admin/crear-usuario' },
+    { name: 'Modificar usuario', link: '/admin/modificar-usuario' },
+    { name: 'Eliminar usuario', link: '/admin/eliminar-usuario' },
+    { name: 'Crear producto', link: '/admin/crear-producto' },
+    { name: 'Modificar producto', link: '/admin/modificar-producto' },
+    { name: 'Eliminar producto', link: '/admin/eliminar-producto' }
+  ];
+
+  constructor(private authService: Auth) {}
+
+  ngOnInit() {
+    this.authSub.add(
+      this.authService.currentUser$.subscribe(user => {
+        this.currentUser = user;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.authSub.unsubscribe();
+  }
+
+  toggleAdminMenu() {
+    this.categories.forEach(c => c.isOpen = false);
+    this.isAdminMenuOpen = !this.isAdminMenuOpen;
+  }
 
   toggleCategory(category: Category) {
-    category.isOpen = !category.isOpen;
+    this.isAdminMenuOpen = false;
+    const wasOpen = category.isOpen;
+    this.categories.forEach(c => c.isOpen = false);
+    category.isOpen = !wasOpen;
   }
 
   setActiveLink(link: string) {

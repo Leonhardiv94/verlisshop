@@ -27,44 +27,66 @@
 .section2 {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 7px;
 }
 
 .section2 button {
-  padding: 10px 20px;
+  padding: 8px 14px;
   border: none;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  white-space: nowrap;
 }
 
-.section2 .login {
+.section2 .login-btn {
   background-color: #FD7E14;
   color: #FFFFFF;
 }
 
-.section2 .login:hover {
+.section2 .login-btn:hover {
   background-color: #ff9d46;
 }
 
-.section2 .register {
+.section2 .register-btn {
   background-color: #495057;
   color: #F8F9FA;
 }
 
-.section2 .register:hover {
+.section2 .register-btn:hover {
   background-color: #6c757d;
+}
+
+.section2 .nav-btn {
+  background-color: transparent;
+  color: #F8F9FA;
+}
+
+.section2 .nav-btn:hover {
+  color: #FD7E14;
+}
+
+.admin-menu-btn {
+  background-color: #FD7E14;
+  color: #FFFFFF;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.admin-menu-btn:hover {
+  background-color: #ff9d46;
 }
 
 /* User Logged In UI */
 .user-block {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-right: 15px;
-  padding: 5px 10px;
+  gap: 6px;
+  margin-right: 8px;
+  padding: 4px 8px;
   border-radius: 8px;
   transition: all 0.2s ease;
 }
@@ -114,7 +136,7 @@
   background-color: transparent;
   color: #F8F9FA;
   border: 1px solid transparent;
-  padding: 8px;
+  padding: 6px;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -132,9 +154,9 @@
   background-color: transparent;
   color: #F8F9FA;
   border: 1px solid #495057;
-  padding: 8px 15px;
+  padding: 6px 12px;
   border-radius: 5px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all 0.2s ease;
 }
 
@@ -148,9 +170,9 @@
   background-color: transparent;
   color: #dc3545;
   border: 1px solid #dc3545;
-  padding: 8px 15px;
+  padding: 6px 12px;
   border-radius: 5px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all 0.2s ease;
 }
 

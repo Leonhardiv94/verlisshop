@@ -1,4 +1,32 @@
 <aside class="sidebar">
+  @if (currentUser?.role === 'admin') {
+    <h2 class="sidebar-title">Administración</h2>
+    <nav class="product-nav" style="margin-bottom: 20px;">
+      <button class="category-toggle" style="background-color: #FD7E14; color: white;" (click)="toggleAdminMenu()">
+        Opciones Administrador
+        <span class="category-arrow" [class.open]="isAdminMenuOpen">
+          {{ isAdminMenuOpen ? '▼' : '►' }}
+        </span>
+      </button>
+
+      @if (isAdminMenuOpen) {
+        <ul class="subcategory-list">
+          @for (option of adminOptions; track option.name) {
+            <li>
+              <a
+                [href]="option.link"
+                [class.active-link]="activeLink === option.link"
+                (click)="setActiveLink(option.link); $event.preventDefault()"
+              >
+                {{ option.name }}
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </nav>
+  }
+
   <h2 class="sidebar-title">Productos</h2>
 
   <nav class="product-nav">

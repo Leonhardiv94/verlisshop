@@ -4,21 +4,19 @@
   </div>
   <div class="section2">
     @if (!isLoggedIn) {
-      <button class="login" (click)="onLogin()">Iniciar Sesión</button>
-      <button class="register" (click)="onRegister()">Registrarse</button>
+      <button class="nav-btn" (click)="navigateToHome()">Inicio</button>
+      <button class="login-btn" (click)="onLogin()">Iniciar Sesión</button>
+      <button class="register-btn" (click)="onRegister()">Registrarse</button>
     } @else {
       @if (currentUser?.role === 'admin') {
-        <button class="login">Historial de ventas</button>
-        <button class="login">Modificar usuario</button>
-        <button class="login">Crear producto</button>
-        <button class="login">Modificar producto</button>
+        <button class="nav-btn" (click)="navigateToHome()">Inicio</button>
 
         <div class="user-block clickable-user" (click)="navigateToProfile()" title="Ver Info del usuario">
           <div class="user-avatar">
             @if (currentUser?.avatar) {
               <img [src]="currentUser.avatar" alt="Avatar" class="user-avatar-img" />
             } @else {
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
@@ -28,6 +26,8 @@
         </div>
         <button class="logout" (click)="onLogout()">Cerrar sesión</button>
       } @else {
+        <button class="text-btn outline" (click)="navigateToHome()">Inicio</button>
+
         <div class="user-block clickable-user" (click)="navigateToProfile()" title="Ver Info del usuario">
           <div class="user-avatar">
             @if (currentUser?.avatar) {
