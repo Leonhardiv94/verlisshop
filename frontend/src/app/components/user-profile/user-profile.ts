@@ -153,7 +153,47 @@ export class UserProfile implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const base64Image = e.target.result;
-        this.uploadAvatar(base64Image);
+        
+        // Comprimir imagen usando Canvas
+        const img = new Image();
+        img.src = base64Image;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          
+          // Definir tamaño máximo (ej: 250px x 250px es de sobra para un avatar)
+          const MAX_WIDTH = 250;
+          const MAX_HEIGHT = 250;
+          let width = img.width;
+          let height = img.height;
+
+          // Calcular proporciones si la imagen es muy grande
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Exportar como JPEG a un 75% de calidad
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+            this.uploadAvatar(compressedBase64);
+          } else {
+            // Si el canvas falla (edge case rarisimo), sube la original
+            this.uploadAvatar(base64Image);
+          }
+        };
       };
       reader.readAsDataURL(file);
     }
