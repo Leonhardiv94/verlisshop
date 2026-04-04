@@ -1,0 +1,20 @@
+.footer {
+  padding: 20px 25px;
+  background-color: #212529;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.footer-text, .autor {
+  color: #F8F9FA;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.autor strong {
+  font-weight: 700;
+}

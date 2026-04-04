@@ -1,0 +1,30 @@
+<aside class="sidebar">
+  <h2 class="sidebar-title">Productos</h2>
+
+  <nav class="product-nav">
+    @for (category of categories; track category.name) {
+      <button class="category-toggle" (click)="toggleCategory(category)">
+        {{ category.name }}
+        <span class="category-arrow" [class.open]="category.isOpen">
+          {{ category.isOpen ? '▼' : '►' }}
+        </span>
+      </button>
+
+      @if (category.isOpen) {
+        <ul class="subcategory-list">
+          @for (sub of category.subcategories; track sub.name) {
+            <li>
+              <a
+                [href]="sub.link"
+                [class.active-link]="activeLink === sub.link"
+                (click)="setActiveLink(sub.link); $event.preventDefault()"
+              >
+                {{ sub.name }}
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </nav>
+</aside>

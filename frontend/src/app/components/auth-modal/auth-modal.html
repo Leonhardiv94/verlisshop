@@ -1,0 +1,152 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-content">
+    <button class="close-modal" (click)="closeModal()">✕</button>
+
+    <!-- LOGIN FORM -->
+    @if (modalType === 'login') {
+      <h2>Iniciar Sesión</h2>
+
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      }
+
+      <div class="form-group">
+        <label for="login-email">Correo electrónico</label>
+        <input
+          type="email"
+          id="login-email"
+          placeholder="ejemplo@correo.com"
+          [(ngModel)]="loginEmail"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="login-password">Contraseña</label>
+        <div class="input-wrapper">
+          <input
+            [type]="showLoginPassword ? 'text' : 'password'"
+            id="login-password"
+            placeholder="Tu contraseña"
+            [(ngModel)]="loginPassword"
+          />
+          <span class="toggle-password" (click)="toggleLoginPassword()">
+            @if (showLoginPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="login-btn" (click)="onLogin()" [disabled]="isLoading">
+          {{ isLoading ? 'Cargando...' : 'Iniciar Sesión' }}
+        </button>
+        <a class="forgot-password" href="#" (click)="$event.preventDefault()">¿Olvidaste tu contraseña?</a>
+        <p class="switch-text">¿No tienes cuenta? <a (click)="switchToRegister()">Regístrate</a></p>
+      </div>
+    }
+
+    <!-- REGISTER FORM -->
+    @if (modalType === 'register') {
+      <h2>Registrarse</h2>
+
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      }
+
+      @if (successMessage) {
+        <div class="success-message" style="color: #4CAF50; background-color: #E8F5E9; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #A5D6A7;">{{ successMessage }}</div>
+      }
+
+      <div class="form-group row">
+        <div class="half-width">
+          <label for="register-nombres">Nombres</label>
+          <input type="text" id="register-nombres" placeholder="Nombres" [(ngModel)]="registerNombres"/>
+        </div>
+        <div class="half-width" style="margin-left: 10px;">
+          <label for="register-apellidos">Apellidos</label>
+          <input type="text" id="register-apellidos" placeholder="Apellidos" [(ngModel)]="registerApellidos"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="half-width">
+          <label for="register-cedula">Cédula</label>
+          <input type="text" id="register-cedula" placeholder="1234567890" [(ngModel)]="registerCedula"/>
+        </div>
+        <div class="half-width" style="margin-left: 10px;">
+          <label for="register-fecha-nacimiento">F. de Nacimiento</label>
+          <input type="date" id="register-fecha-nacimiento" [(ngModel)]="registerFechaNacimiento"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="register-correo">Correo electrónico</label>
+        <input type="email" id="register-correo" placeholder="ejemplo@correo.com" [(ngModel)]="registerCorreo"/>
+      </div>
+
+      <div class="form-group row">
+        <div class="half-width">
+          <label for="register-pais">País</label>
+          <input type="text" id="register-pais" placeholder="País" [(ngModel)]="registerPais"/>
+        </div>
+         <div class="half-width" style="margin-left: 10px;">
+          <label for="register-ciudad">Ciudad</label>
+          <input type="text" id="register-ciudad" placeholder="Ciudad" [(ngModel)]="registerCiudad"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="register-direccion">Dirección</label>
+        <input type="text" id="register-direccion" placeholder="Ej. Calle 123" [(ngModel)]="registerDireccion"/>
+      </div>
+
+      <div class="form-group">
+        <label for="register-password">Contraseña</label>
+        <div class="input-wrapper">
+          <input
+            [type]="showRegisterPassword ? 'text' : 'password'"
+            id="register-password"
+            placeholder="Min 8 caracteres (ay, Mayús)"
+            [(ngModel)]="registerPassword"
+          />
+          <span class="toggle-password" (click)="toggleRegisterPassword()">
+            @if (showRegisterPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="register-confirm-password">Confirmar contraseña</label>
+        <div class="input-wrapper">
+          <input
+            [type]="showRegisterConfirmPassword ? 'text' : 'password'"
+            id="register-confirm-password"
+            placeholder="Repite tu contraseña"
+            [(ngModel)]="registerConfirmPassword"
+          />
+          <span class="toggle-password" (click)="toggleRegisterConfirmPassword()">
+            @if (showRegisterConfirmPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="register-btn" (click)="onRegister()" [disabled]="isRegisterDisabled">
+          {{ isLoading ? 'Cargando...' : 'Registrarse' }}
+        </button>
+        <p class="switch-text">¿Ya tienes cuenta? <a (click)="switchToLogin()">Inicia Sesión</a></p>
+      </div>
+    }
+  </div>
+</div>

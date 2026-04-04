@@ -1,0 +1,85 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar {
+  background-color: #343A40;
+  width: 250px;
+  padding: 20px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #F8F9FA;
+  margin-bottom: 20px;
+}
+
+.product-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.category-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #495057;
+  color: #F8F9FA;
+  border: none;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+.category-toggle:hover {
+  background-color: #FD7E14;
+}
+
+.category-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.subcategory-list {
+  list-style: none;
+  padding: 10px 0 0 15px;
+  margin: 0;
+  animation: slideDown 0.3s ease-out;
+}
+
+.subcategory-list li a {
+  display: block;
+  color: #CED4DA;
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: 0.95rem;
+}
+
+.subcategory-list li a:hover {
+  background-color: #495057;
+  color: #FFFFFF;
+}
+
+.subcategory-list li a.active-link {
+  background-color: #FD7E14;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
