@@ -43,4 +43,8 @@ export class Header implements OnInit, OnDestroy {
     // Use replaceUrl to prevent the user from using the back arrow to a logged-in state easily
     this.router.navigate(['/'], { replaceUrl: true });
   }
+
+  navigateToProfile() {
+    this.router.navigate(['/profile']);
+  }
 }

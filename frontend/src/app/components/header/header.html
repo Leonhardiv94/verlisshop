@@ -7,12 +7,16 @@
       <button class="login" (click)="onLogin()">Iniciar Sesión</button>
       <button class="register" (click)="onRegister()">Registrarse</button>
     } @else {
-      <div class="user-block">
+      <div class="user-block clickable-user" (click)="navigateToProfile()" title="Ver Info del usuario">
         <div class="user-avatar">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
+          @if (currentUser?.avatar) {
+            <img [src]="currentUser.avatar" alt="Avatar" class="user-avatar-img" />
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          }
         </div>
         <span class="user-name">{{ currentUser?.nombres }} {{ currentUser?.apellidos }}</span>
       </div>
@@ -25,7 +29,6 @@
         </svg>
       </button>
 
-      <button class="text-btn outline">Info. del usuario</button>
       <button class="text-btn outline">Ayuda</button>
       <button class="logout" (click)="onLogout()">Cerrar sesión</button>
     }

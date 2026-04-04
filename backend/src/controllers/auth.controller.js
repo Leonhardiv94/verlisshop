@@ -94,4 +94,61 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getProfile };
+const updateGeneral = async (req, res) => {
+  try {
+    const { pais, ciudad, direccion } = req.body;
+    const user = await User.findByIdAndUpdate(req.userId, { pais, ciudad, direccion }, { new: true, runValidators: true });
+    res.json({ message: 'Información general actualizada', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error actualizando información general', error: error.message });
+  }
+};
+
+const updatePhones = async (req, res) => {
+  try {
+    const { telefonoLlamadas, telefonoWhatsapp } = req.body;
+    const user = await User.findByIdAndUpdate(req.userId, { telefonoLlamadas, telefonoWhatsapp }, { new: true, runValidators: true });
+    res.json({ message: 'Teléfonos de contacto actualizados', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error actualizando teléfonos', error: error.message });
+  }
+};
+
+const updateCredentials = async (req, res) => {
+  try {
+    const { correo, password } = req.body;
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+    if (correo) {
+      const existingUser = await User.findOne({ correo, _id: { $ne: req.userId } });
+      if (existingUser) return res.status(400).json({ message: 'El correo ya está en uso' });
+      user.correo = correo;
+    }
+    
+    if (password) {
+      user.password = password; // Will be hashed by pre-save hook
+    }
+
+    await user.save();
+    res.json({ message: 'Credenciales actualizadas', user });
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(e => e.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    res.status(500).json({ message: 'Error actualizando credenciales', error: error.message });
+  }
+};
+
+const updateAvatar = async (req, res) => {
+  try {
+    const { avatar } = req.body;
+    const user = await User.findByIdAndUpdate(req.userId, { avatar }, { new: true });
+    res.json({ message: 'Avatar actualizado correctamente', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error actualizando avatar', error: error.message });
+  }
+};
+
+module.exports = { register, login, getProfile, updateGeneral, updatePhones, updateCredentials, updateAvatar };

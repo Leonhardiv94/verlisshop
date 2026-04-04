@@ -64,6 +64,21 @@
   align-items: center;
   gap: 10px;
   margin-right: 15px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.clickable-user {
+  cursor: pointer;
+}
+
+.clickable-user:hover {
+  background-color: #343A40;
+}
+
+.clickable-user:hover .user-name {
+  color: #FD7E14;
 }
 
 .user-avatar {
@@ -75,6 +90,13 @@
   align-items: center;
   justify-content: center;
   color: #F8F9FA;
+  overflow: hidden;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .user-name {
@@ -85,6 +107,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.2s ease;
 }
 
 .icon-btn {
@@ -117,7 +140,8 @@
 
 .text-btn.outline:hover {
   background-color: #343A40;
-  border-color: #6c757d;
+  border-color: #343A40;
+  color: #FD7E14;
 }
 
 .logout {

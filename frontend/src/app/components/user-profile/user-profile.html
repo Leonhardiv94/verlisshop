@@ -1,0 +1,165 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <h2 class="profile-title">Información de Usuario</h2>
+
+    <!-- SECTION 1: General Info -->
+    <div class="profile-section">
+      <h3>Información General (Personal y Envío)</h3>
+      
+      @if (generalMsg) {
+        <div class="alert success">{{ generalMsg }}</div>
+      }
+
+      <div class="form-row">
+        <div class="form-group disabled">
+          <label>Nombres</label>
+          <input type="text" [value]="user.nombres" disabled />
+        </div>
+        <div class="form-group disabled">
+          <label>Apellidos</label>
+          <input type="text" [value]="user.apellidos" disabled />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group disabled">
+          <label>Cédula</label>
+          <input type="text" [value]="user.cedula" disabled />
+        </div>
+        <div class="form-group disabled">
+          <label>Fecha de Nacimiento</label>
+          <input type="text" [value]="user.fechaNacimiento | date:'shortDate'" disabled />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>País</label>
+          <input type="text" [(ngModel)]="user.pais" />
+        </div>
+        <div class="form-group">
+          <label>Ciudad</label>
+          <input type="text" [(ngModel)]="user.ciudad" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Dirección</label>
+        <input type="text" [(ngModel)]="user.direccion" />
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-update" (click)="updateGeneral()" [disabled]="isLoadingGeneral">
+          {{ isLoadingGeneral ? 'Cargando...' : 'Actualizar Información General' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- SECTION 1.5: Avatar -->
+    <div class="profile-section avatar-section">
+      <h3>Foto de Perfil</h3>
+      @if (avatarMsg) {
+        <div class="alert success">{{ avatarMsg }}</div>
+      }
+      <div class="avatar-uploader-container">
+        <div class="avatar-preview">
+          @if (user.avatar) {
+            <img [src]="user.avatar" alt="Avatar" class="avatar-img" />
+          } @else {
+            <div class="avatar-placeholder">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+          }
+        </div>
+        <div class="avatar-actions">
+          <label class="btn btn-update upload-label">
+            Subir o Cambiar Foto
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
+          </label>
+          @if (isLoadingAvatar) {
+            <small>Cargando...</small>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: Contact Phones -->
+    <div class="profile-section">
+      <h3>Actualizar Teléfonos de Contacto</h3>
+      
+      @if (phonesMsg) {
+        <div class="alert success">{{ phonesMsg }}</div>
+      }
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Teléfono para Llamadas</label>
+          <input type="text" placeholder="Ej. +57 300 000 0000" [(ngModel)]="telefonoLlamadas" />
+        </div>
+        <div class="form-group">
+          <label>Teléfono de WhatsApp</label>
+          <input type="text" placeholder="Ej. +57 300 000 0000" [(ngModel)]="telefonoWhatsapp" />
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-update" (click)="updatePhones()" [disabled]="isLoadingPhones">
+          {{ isLoadingPhones ? 'Cargando...' : 'Actualizar Teléfonos de Contacto' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- SECTION 3: Credentials -->
+    <div class="profile-section highlight-section">
+      <h3>Actualizar Credenciales de Ingreso</h3>
+      
+      @if (credentialsMsg) {
+        <div class="alert success credentials-alert">{{ credentialsMsg }}</div>
+      }
+
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" [(ngModel)]="newCorreo" />
+      </div>
+
+      <div class="form-group credentials-input">
+        <label>Nueva Contraseña (Opcional)</label>
+        <div class="input-wrapper">
+          <input [type]="showNewPassword ? 'text' : 'password'" placeholder="Min 8 caracteres (a-z, A-Z)" [(ngModel)]="newPassword" />
+          <span class="toggle-password" (click)="toggleNewPassword()">
+            @if (showNewPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </span>
+        </div>
+        <small>Déjalo en blanco si no deseas cambiar tu contraseña actual.</small>
+      </div>
+
+      <div class="form-group credentials-input">
+        <label>Confirmar Nueva Contraseña</label>
+        <div class="input-wrapper">
+          <input [type]="showConfirmPassword ? 'text' : 'password'" placeholder="Repite tu contraseña" [(ngModel)]="newConfirmPassword" />
+          <span class="toggle-password" (click)="toggleConfirmPassword()">
+            @if (showConfirmPassword) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            }
+          </span>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-credentials" (click)="updateCredentials()" [disabled]="isLoadingCredentials">
+          {{ isLoadingCredentials ? 'Cargando...' : 'Actualizar Credenciales' }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

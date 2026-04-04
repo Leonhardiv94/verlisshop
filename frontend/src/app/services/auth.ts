@@ -40,6 +40,60 @@ export class Auth {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData);
   }
 
+  private getAuthHeaders() {
+    return {
+      headers: { Authorization: `Bearer ${this.getToken()}` }
+    };
+  }
+
+  getProfile(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/profile`, this.getAuthHeaders());
+  }
+
+  updateGeneralInfo(data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/profile/general`, data, this.getAuthHeaders()).pipe(
+      tap(res => {
+        if(res.user) {
+          localStorage.setItem(this.userKey, JSON.stringify(res.user));
+          this.currentUserSubject.next(res.user);
+        }
+      })
+    );
+  }
+
+  updatePhones(data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/profile/phones`, data, this.getAuthHeaders()).pipe(
+      tap(res => {
+        if(res.user) {
+          localStorage.setItem(this.userKey, JSON.stringify(res.user));
+          this.currentUserSubject.next(res.user);
+        }
+      })
+    );
+  }
+
+  updateCredentials(data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/profile/credentials`, data, this.getAuthHeaders()).pipe(
+      tap(res => {
+        if(res.user) {
+          localStorage.setItem(this.userKey, JSON.stringify(res.user));
+          this.currentUserSubject.next(res.user);
+        }
+      })
+    );
+  }
+
+  updateAvatar(data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/profile/avatar`, data, this.getAuthHeaders()).pipe(
+      tap(res => {
+        if(res.user) {
+          localStorage.setItem(this.userKey, JSON.stringify(res.user));
+          this.currentUserSubject.next(res.user);
+        }
+      })
+    );
+  }
+
   logout() {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
