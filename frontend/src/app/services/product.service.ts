@@ -5,6 +5,7 @@ import { Auth } from './auth';
 
 export interface Product {
   _id?: string;
+  codigo?: number;
   nombre: string;
   precio: number;
   categoria: string;

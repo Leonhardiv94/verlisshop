@@ -57,9 +57,15 @@
       </div>
 
       <!-- General Info -->
-      <div class="form-group">
-        <label>Nombre del Producto</label>
-        <input type="text" [(ngModel)]="product.nombre" name="nombre" placeholder="Ej: Tenis deportivos de correr" required />
+      <div class="row">
+        <div class="form-group half">
+          <label>Código de Producto</label>
+          <input type="number" [(ngModel)]="product.codigo" name="codigo" placeholder="Ej: 1024" required />
+        </div>
+        <div class="form-group half">
+          <label>Nombre del Producto</label>
+          <input type="text" [(ngModel)]="product.nombre" name="nombre" placeholder="Ej: Tenis deportivos de correr" required />
+        </div>
       </div>
 
       <div class="row">

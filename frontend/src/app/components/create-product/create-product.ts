@@ -38,8 +38,9 @@ export class CreateProduct implements OnInit {
 
   // Form Model
   product: Product = {
+    codigo: null as any, // forzar a que esté vacío al principio
     nombre: '',
-    precio: 0,
+    precio: null as any,
     categoria: '',
     subcategoria: '',
     material: '',
@@ -168,8 +169,8 @@ export class CreateProduct implements OnInit {
         this.isLoading = false;
         this.successMsg = '¡Producto creado y publicado en la tienda exitosamente!';
         // Limpiar
-         this.product = {
-          nombre: '', precio: 0, categoria: '', subcategoria: '', material: '',
+          this.product = {
+          codigo: null as any, nombre: '', precio: null as any, categoria: '', subcategoria: '', material: '',
           descripcion: '', genero: '', fotoPrincipal: '', fotosAdicionales: [], tallas: []
         };
         this.subcategoriasActuales = [];
