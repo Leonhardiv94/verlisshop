@@ -12,4 +12,7 @@ router.get('/', productController.getProducts);
 // Actualizar producto - Protegido
 router.put('/:id', authMiddleware, productController.updateProduct);
 
+// Eliminar producto - Protegido
+router.delete('/:id', authMiddleware, productController.deleteProduct);
+
 module.exports = router;

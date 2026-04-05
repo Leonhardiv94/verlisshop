@@ -85,3 +85,34 @@ exports.updateProduct = async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar el producto' });
   }
 };
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ error: 'Acceso denegado. Permisos requeridos.' });
+    }
+
+    const { password } = req.body;
+    if (!password) {
+      return res.status(400).json({ error: 'Se requiere la contraseña del administrador para confirmar.' });
+    }
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Contraseña de administrador incorrecta.' });
+    }
+
+    const { id } = req.params;
+    const deletedProduct = await Product.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+
+    res.status(200).json({ message: 'Producto eliminado permanentemente.' });
+  } catch (error) {
+    console.error('Error in deleteProduct:', error);
+    res.status(500).json({ error: 'Error al eliminar el producto' });
+  }
+};

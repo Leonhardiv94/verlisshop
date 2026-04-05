@@ -61,4 +61,12 @@ export class ProductService {
   updateProduct(id: string, product: Partial<Product>): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, product, { headers: this.getHeaders() });
   }
+
+  // Admin eliminar
+  deleteProduct(id: string, password: string): Observable<any> {
+    return this.http.request('delete', `${this.apiUrl}/${id}`, {
+      body: { password },
+      headers: this.getHeaders()
+    });
+  }
 }

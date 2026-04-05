@@ -1,0 +1,86 @@
+<div class="delete-product-container">
+  
+  <div class="ep-card">
+    <h2 class="ep-title text-danger">Eliminar Producto</h2>
+    <p class="ep-subtitle">Busca el producto por nombre, categoría, subcategoría o código para eliminarlo.</p>
+
+    @if (errorMsg && !productToDelete) { <div class="alert error">{{ errorMsg }}</div> }
+    @if (successMsg && !productToDelete) { <div class="alert success">{{ successMsg }}</div> }
+
+    <div class="search-bar">
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Escribe aquí para buscar el producto a eliminar..." (keyup.enter)="onSearch()" />
+      <button class="btn btn-search" (click)="onSearch()" [disabled]="isSearching">
+        {{ isSearching ? 'Buscando...' : 'Buscar' }}
+      </button>
+    </div>
+
+    @if (searchResults.length > 0) {
+      <div class="results-list fade-in">
+        @for (product of searchResults; track product._id) {
+          <div class="result-item">
+            <div class="r-img-wrapper">
+              <img [src]="product.fotoPrincipal" class="r-img" alt="Product" />
+            </div>
+            <div class="r-info">
+              <h4 class="r-name">{{ product.nombre }}</h4>
+              <span class="r-code">Código: #{{ product.codigo || 'N/A' }}</span>
+              <span class="r-cat">{{ product.categoria }} - {{ product.subcategoria }}</span>
+            </div>
+            <div class="r-actions">
+              <button class="btn btn-danger" (click)="promptDelete(product)">Eliminar Producto</button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else if (searchQuery && !isSearching && searchResults.length === 0) {
+       <p class="empty-res">No se encontraron productos con ese filtro.</p>
+    }
+  </div>
+
+  <!-- Modal de Doble Confirmación -->
+  @if (productToDelete) {
+    <div class="modal-overlay">
+      <div class="modal-card bounce-in">
+        <h3 class="modal-title">¡Atención Administrador!</h3>
+        <p class="modal-desc">
+          Vas a eliminar permanentemente el producto <strong>{{ productToDelete.nombre }}</strong> (Código: #{{ productToDelete.codigo || 'N/A' }}). Esta acción <u>no se puede deshacer</u> en el sistema.
+        </p>
+
+        @if (errorMsg) {
+          <div class="alert error mini-alert">
+            {{ errorMsg }}
+          </div>
+        }
+
+        <div class="pass-box">
+          <label>Identidad Requerida: Tu Contraseña</label>
+          <div class="input-wrapper">
+            <input 
+              [type]="showPassword ? 'text' : 'password'" 
+              [(ngModel)]="adminPassword" 
+              placeholder="Escribe tu contraseña maestra" 
+              (keyup.enter)="onConfirmDelete()"
+              autofocus
+            />
+            <button class="toggle-eye" (click)="togglePasswordVisibility()" type="button">
+              @if (showPassword) {
+                <!-- Icono ojo cerrado -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              } @else {
+                <!-- Icono ojo abierto -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              }
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-cancel-modal" (click)="cancelDelete()" [disabled]="isDeleting">Cancelar</button>
+          <button class="btn-confirm-delete" (click)="onConfirmDelete()" [disabled]="!adminPassword || isDeleting">
+            {{ isDeleting ? 'Aniquilando...' : 'Confirmar Eliminación' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
