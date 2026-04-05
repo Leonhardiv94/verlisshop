@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { Subscription } from 'rxjs';
 
 interface Subcategory {
   name: string;
-  link: string;
 }
 
 interface Category {
@@ -24,41 +24,30 @@ export class Sidebar {
       name: 'Zapatos para Dama',
       isOpen: false,
       subcategories: [
-        { name: 'Planas', link: '/productos/dama/planas' },
-        { name: 'Tres puntas', link: '/productos/dama/tres-puntas' },
-        { name: 'Planas con taloneras', link: '/productos/dama/planas-taloneras' },
-        { name: 'Plataforma', link: '/productos/dama/plataforma' },
-        { name: 'Zapato elegante de tacón', link: '/productos/dama/elegante-tacon' },
-        { name: 'Canoas', link: '/productos/dama/canoas' },
-        { name: 'Botas', link: '/productos/dama/botas' },
-        { name: 'Deportivas', link: '/productos/dama/deportivas' },
-        { name: 'Casual bajito', link: '/productos/dama/casual-bajito' }
+        { name: 'Planas' }, { name: 'Tres puntas' }, { name: 'Planas con taloneras' },
+        { name: 'Plataforma' }, { name: 'Zapato elegante de tacón' }, { name: 'Canoas' },
+        { name: 'Botas' }, { name: 'Deportivas' }, { name: 'Casual bajito' }
       ]
     },
     {
       name: 'Zapatos para Caballeros',
       isOpen: false,
       subcategories: [
-        { name: 'Zapato deportivo', link: '/productos/caballeros/deportivo' },
-        { name: 'Zapato casual', link: '/productos/caballeros/casual' },
-        { name: 'Canoas', link: '/productos/caballeros/canoas' }
+        { name: 'Zapato deportivo' }, { name: 'Zapato casual' }, { name: 'Canoas' }
       ]
     },
     {
       name: 'Zapatos para Niños',
       isOpen: false,
       subcategories: [
-        { name: 'Deportivos', link: '/productos/ninos/deportivos' },
-        { name: 'Para toda ocasión', link: '/productos/ninos/toda-ocasion' }
+        { name: 'Deportivos' }, { name: 'Para toda ocasión' }
       ]
     },
     {
       name: 'Bolsos y Carteras',
       isOpen: false,
       subcategories: [
-        { name: 'Mochilas deportivas', link: '/productos/bolsos/mochilas-deportivas' },
-        { name: 'Bolsos de salir', link: '/productos/bolsos/bolsos-salir' },
-        { name: 'Bolsos deportivos', link: '/productos/bolsos/bolsos-deportivos' }
+        { name: 'Mochilas deportivas' }, { name: 'Bolsos de salir' }, { name: 'Bolsos deportivos' }
       ]
     }
   ];
@@ -78,7 +67,7 @@ export class Sidebar {
     { name: 'Eliminar producto', link: '/admin/eliminar-producto' }
   ];
 
-  constructor(private authService: Auth) {}
+  constructor(private authService: Auth, private router: Router) {}
 
   ngOnInit() {
     this.authSub.add(
@@ -102,9 +91,22 @@ export class Sidebar {
     const wasOpen = category.isOpen;
     this.categories.forEach(c => c.isOpen = false);
     category.isOpen = !wasOpen;
+
+    if (category.isOpen) {
+      this.router.navigate(['/'], { queryParams: { categoria: category.name } });
+      this.activeLink = '';
+    } else {
+      this.router.navigate(['/']);
+    }
+  }
+
+  filterSubcategory(catName: string, subName: string) {
+    this.activeLink = subName;
+    this.router.navigate(['/'], { queryParams: { categoria: catName, subcategoria: subName } });
   }
 
   setActiveLink(link: string) {
     this.activeLink = link;
+    this.router.navigate([link]);
   }
 }

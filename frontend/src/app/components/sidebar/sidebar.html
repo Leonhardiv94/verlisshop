@@ -43,9 +43,9 @@
           @for (sub of category.subcategories; track sub.name) {
             <li>
               <a
-                [href]="sub.link"
-                [class.active-link]="activeLink === sub.link"
-                (click)="setActiveLink(sub.link); $event.preventDefault()"
+                href="#"
+                [class.active-link]="activeLink === sub.name"
+                (click)="filterSubcategory(category.name, sub.name); $event.preventDefault()"
               >
                 {{ sub.name }}
               </a>

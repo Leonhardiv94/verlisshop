@@ -1,0 +1,121 @@
+<div class="create-product-container">
+  <div class="cp-card">
+    <h2 class="cp-title">Registrar Nuevo Producto</h2>
+
+    @if (errorMsg) { <div class="alert error">{{ errorMsg }}</div> }
+    @if (successMsg) { <div class="alert success">{{ successMsg }}</div> }
+
+    <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+      
+      <!-- Categoria y Subcategoria -->
+      <div class="row">
+        <div class="form-group half">
+          <label>Categoría</label>
+          <select [(ngModel)]="product.categoria" name="categoria" (change)="onCategoryChange()" required>
+            <option value="" disabled selected>Selecciona una categoría</option>
+            @for (cat of categories; track cat.name) {
+              <option [value]="cat.name">{{ cat.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group half">
+          <label>Subcategoría</label>
+          <select [(ngModel)]="product.subcategoria" name="subcategoria" [disabled]="!product.categoria" required>
+            <option value="" disabled selected>Selecciona la subcategoría</option>
+            @for (sub of subcategoriasActuales; track sub) {
+              <option [value]="sub">{{ sub }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Fotos -->
+      <div class="row">
+        <div class="form-group half">
+          <label>Foto Principal (Obligatoria)</label>
+          <div class="file-upload">
+            <input type="file" (change)="onMainPhotoSelected($event)" accept="image/*" required />
+          </div>
+          @if(product.fotoPrincipal) {
+            <img [src]="product.fotoPrincipal" class="preview-img" alt="Principal" />
+          }
+        </div>
+
+        <div class="form-group half">
+          <label>Fotos Adicionales (Múltiples)</label>
+          <div class="file-upload multiline">
+            <input type="file" (change)="onAdditionalPhotosSelected($event)" accept="image/*" multiple />
+          </div>
+          <small>Usa la tecla CTRL (Windows) para seleccionar múltiples archivos de una vez.</small>
+          <div class="preview-grid">
+            @for (img of product.fotosAdicionales; track img; let i = $index) {
+              <img [src]="img" class="preview-thumb" alt="Extra" />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- General Info -->
+      <div class="form-group">
+        <label>Nombre del Producto</label>
+        <input type="text" [(ngModel)]="product.nombre" name="nombre" placeholder="Ej: Tenis deportivos de correr" required />
+      </div>
+
+      <div class="row">
+        <div class="form-group half">
+          <label>Precio de Venta ($)</label>
+          <input type="number" [(ngModel)]="product.precio" name="precio" placeholder="Ej: 150000" min="0" required />
+        </div>
+        <div class="form-group half">
+          <label>Material</label>
+          <input type="text" [(ngModel)]="product.material" name="material" placeholder="Ej: Cuero sintético y goma" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción del Producto</label>
+        <textarea [(ngModel)]="product.descripcion" name="descripcion" rows="3" placeholder="Escribe detalles del producto aquí..." required></textarea>
+      </div>
+
+      <!-- Bloques Condicionales Segun la Categoría -->
+
+      <!-- Si es Zapatos: Mostrar Tallas -->
+      @if (product.categoria.includes('Zapatos')) {
+        <div class="form-group">
+          <label>Tallas Disponibles <small>(Selecciona varias)</small></label>
+          <div class="tallas-grid">
+            @for (talla of tallasDisponibles; track talla) {
+              <button 
+                type="button" 
+                class="talla-btn" 
+                [class.selected]="isTallaSelected(talla)"
+                (click)="toggleTalla(talla)">
+                {{ talla }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Si es Bolsos: Preguntar Genero -->
+      @if (product.categoria === 'Bolsos y Carteras') {
+        <div class="form-group special-box">
+          <label>Género del Bolso / Accesorio</label>
+          <div class="radio-group">
+            <label><input type="radio" [(ngModel)]="product.genero" name="genero" value="Mujer" /> Mujer</label>
+            <label><input type="radio" [(ngModel)]="product.genero" name="genero" value="Hombre" /> Hombre</label>
+            <label><input type="radio" [(ngModel)]="product.genero" name="genero" value="Unisex" /> Unisex</label>
+          </div>
+        </div>
+      }
+
+      <div class="action-bar">
+        <button type="submit" class="btn-create" [disabled]="!productForm.form.valid || isLoading">
+          {{ isLoading ? 'Publicando...' : 'Crear Producto' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
