@@ -42,12 +42,23 @@ export class ProductService {
     return this.http.post(this.apiUrl, product, { headers: this.getHeaders() });
   }
 
-  // Publico
-  getProducts(categoria?: string, subcategoria?: string): Observable<Product[]> {
+  // Publico general + busquedas del admin
+  getProducts(categoria?: string, subcategoria?: string, search?: string): Observable<Product[]> {
     let params = '';
-    if (categoria) params += `?categoria=${encodeURIComponent(categoria)}`;
-    if (subcategoria) params += params ? `&subcategoria=${encodeURIComponent(subcategoria)}` : `?subcategoria=${encodeURIComponent(subcategoria)}`;
+    const queryParts = [];
+    if (categoria) queryParts.push(`categoria=${encodeURIComponent(categoria)}`);
+    if (subcategoria) queryParts.push(`subcategoria=${encodeURIComponent(subcategoria)}`);
+    if (search) queryParts.push(`search=${encodeURIComponent(search)}`);
+    
+    if (queryParts.length > 0) {
+      params = '?' + queryParts.join('&');
+    }
     
     return this.http.get<Product[]>(`${this.apiUrl}${params}`);
+  }
+
+  // Admin editar
+  updateProduct(id: string, product: Partial<Product>): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, product, { headers: this.getHeaders() });
   }
 }

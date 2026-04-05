@@ -1,0 +1,140 @@
+<div class="edit-product-container">
+  
+  @if (!editingProduct) {
+    <div class="ep-card">
+      <h2 class="ep-title">Buscar Producto a Modificar</h2>
+      <p class="ep-subtitle">Busca por nombre, categoría, subcategoría o código numérico.</p>
+
+      <div class="search-bar">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Escribe aquí para buscar..." (keyup.enter)="onSearch()" />
+        <button class="btn btn-search" (click)="onSearch()" [disabled]="isSearching">
+          {{ isSearching ? 'Buscando...' : 'Buscar' }}
+        </button>
+      </div>
+
+      @if (searchResults.length > 0) {
+        <div class="results-list">
+          @for (product of searchResults; track product._id) {
+            <div class="result-item">
+              <div class="r-img-wrapper">
+                <img [src]="product.fotoPrincipal" class="r-img" alt="Product" />
+              </div>
+              <div class="r-info">
+                <h4 class="r-name">{{ product.nombre }}</h4>
+                <span class="r-code">Código: #{{ product.codigo || 'N/A' }}</span>
+                <span class="r-cat">{{ product.categoria }} - {{ product.subcategoria }}</span>
+              </div>
+              <div class="r-actions">
+                <button class="btn btn-edit" (click)="startEdit(product)">Modificar</button>
+              </div>
+            </div>
+          }
+        </div>
+      } @else if (searchQuery && !isSearching && searchResults.length === 0) {
+         <p class="empty-res">No se encontraron productos con ese filtro.</p>
+      }
+    </div>
+  }
+
+  @if (editingProduct) {
+    <div class="ep-card">
+      <div class="ep-header">
+        <h2 class="ep-title">Editando: {{ editingProduct.nombre }}</h2>
+        <button class="btn-cancel" (click)="cancelEdit()">Fijar e ir Atrás</button>
+      </div>
+
+      @if (errorMsg) { <div class="alert error">{{ errorMsg }}</div> }
+      @if (successMsg) { <div class="alert success">{{ successMsg }}</div> }
+
+      <form (ngSubmit)="onUpdate()" #editForm="ngForm">
+      
+        <div class="row">
+          <!-- Campos inmutables en gris (readonly) -->
+          <div class="form-group half">
+            <label>Código de Producto (Bloqueado)</label>
+            <input type="number" [ngModel]="editingProduct.codigo" name="codigo" readonly class="locked-input" />
+          </div>
+          <div class="form-group half">
+            <label>Nombre del Producto (Bloqueado)</label>
+            <input type="text" [ngModel]="editingProduct.nombre" name="nombre" readonly class="locked-input" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Material (Bloqueado)</label>
+          <input type="text" [ngModel]="editingProduct.material" name="material" readonly class="locked-input" />
+        </div>
+
+        <!-- Campos Mutables -->
+        <h3 class="section-title">Información Actualizable</h3>
+        <div class="row">
+          <div class="form-group half">
+            <label>Precio de Venta ($)</label>
+            <input type="number" [(ngModel)]="editingProduct.precio" name="precio" min="0" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción del Producto</label>
+          <textarea [(ngModel)]="editingProduct.descripcion" name="descripcion" rows="3" required></textarea>
+        </div>
+
+        <!-- Tallas solo si aplica -->
+        @if (editingProduct.categoria.includes('Zapatos') || editingProduct.tallas!.length > 0) {
+          <div class="form-group">
+            <label>Modificar Disponibilidad de Tallas</label>
+            <div class="tallas-grid">
+              @for (talla of tallasDisponibles; track talla) {
+                <button 
+                  type="button" 
+                  class="talla-btn" 
+                  [class.selected]="isTallaSelected(talla)"
+                  (click)="toggleTalla(talla)">
+                  {{ talla }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Gestión de Fotos -->
+        <h3 class="section-title">Actualizar Fotografías</h3>
+        
+        <div class="row photos-zone">
+          <div class="form-group half">
+            <label>Foto Principal</label>
+            <div class="file-upload">
+              <input type="file" (change)="onReplaceMainPhoto($event)" accept="image/*" />
+            </div>
+            <div class="img-preview-box main">
+              <img [src]="editingProduct.fotoPrincipal" alt="Principal" />
+            </div>
+          </div>
+
+          <div class="form-group half">
+            <label>Fotos Adicionales</label>
+            <div class="file-upload">
+              <input type="file" (change)="onAddMorePhotos($event)" accept="image/*" multiple />
+            </div>
+            <small>Agrega más o elimina las existentes:</small>
+            <div class="admin-gall">
+              @for (img of editingProduct.fotosAdicionales; track img; let i = $index) {
+                <div class="gall-item">
+                  <img [src]="img" alt="Ext" />
+                  <span class="delete-icon" (click)="removeAdicionalPhoto(i)">&times;</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button type="submit" class="btn-update" [disabled]="!editForm.form.valid || isLoading">
+            {{ isLoading ? 'Guardando...' : 'Actualizar Producto' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  }
+</div>
