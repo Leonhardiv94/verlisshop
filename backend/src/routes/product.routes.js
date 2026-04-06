@@ -9,6 +9,9 @@ router.post('/', authMiddleware, productController.createProduct);
 // Obtener productos - Público
 router.get('/', productController.getProducts);
 
+// Obtener un solo producto - Público
+router.get('/:id', productController.getProductById);
+
 // Actualizar producto - Protegido
 router.put('/:id', authMiddleware, productController.updateProduct);
 

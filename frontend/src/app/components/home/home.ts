@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductService, Product } from '../../services/product.service';
 import { Auth } from '../../services/auth';
@@ -25,6 +25,7 @@ export class Home implements OnInit, OnDestroy {
     private productService: ProductService,
     private authService: Auth,
     private route: ActivatedRoute,
+    private router: Router,
     private modalService: ModalService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -73,6 +74,11 @@ export class Home implements OnInit, OnDestroy {
   // we can create a service to open modals. 
   // Let's implement stub methods for those buttons:
   
+  goToDetail(id: string | undefined) {
+    if (!id) return;
+    this.router.navigate(['/producto', id]);
+  }
+
   onAddToCart(product: Product) {
     console.log('Añadir al carro:', product.nombre);
     // TODO: Implement cart logic

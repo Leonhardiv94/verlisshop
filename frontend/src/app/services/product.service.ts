@@ -57,6 +57,10 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiUrl}${params}`);
   }
 
+  getProduct(id: string): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
   // Admin editar
   updateProduct(id: string, product: Partial<Product>): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, product, { headers: this.getHeaders() });

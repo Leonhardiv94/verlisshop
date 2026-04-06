@@ -5,11 +5,13 @@ import { CreateProduct } from './components/create-product/create-product';
 import { Home } from './components/home/home';
 import { EditProduct } from './components/edit-product/edit-product';
 import { DeleteProduct } from './components/delete-product/delete-product';
+import { ProductDetail } from './components/product-detail/product-detail';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'profile', component: UserProfile },
   { path: 'help', component: Help },
+  { path: 'producto/:id', component: ProductDetail },
   { path: 'admin/crear-producto', component: CreateProduct },
   { path: 'admin/modificar-producto', component: EditProduct },
   { path: 'admin/eliminar-producto', component: DeleteProduct }

@@ -11,7 +11,7 @@
       <div class="products-grid">
         @for (product of products; track product._id) {
           <div class="product-card">
-            <div class="card-img-wrapper" (mouseenter)="startCarousel(product)" (mouseleave)="stopCarousel(product)">
+            <div class="card-img-wrapper" (mouseenter)="startCarousel(product)" (mouseleave)="stopCarousel(product)" (click)="goToDetail(product._id)" style="cursor: pointer;">
               <div class="carousel-track" 
                    [class.no-anim]="!product.fotosAdicionales || product.fotosAdicionales.length === 0"
                    [style.transform]="'translateX(' + -(product._currentIndex || 0) * 100 + '%)'">
@@ -26,7 +26,9 @@
               </div>
             </div>
             <div class="card-body">
-              <h3 class="product-name" [title]="product.nombre">{{ product.nombre }}</h3>
+              <h3 class="product-name" [title]="product.nombre" (click)="goToDetail(product._id)">
+                {{ product.nombre }}
+              </h3>
               <p class="product-material">Material: <span>{{ product.material }}</span></p>
               
               <!-- Si es zapatos mostrar tallas -->
@@ -41,8 +43,7 @@
               <!-- Botones basados en autenticacion -->
               <div class="card-actions">
                 @if (isLoggedIn) {
-                  <button class="btn btn-cart" (click)="onAddToCart(product)">Añadir al carro</button>
-                  <button class="btn btn-buy" (click)="onBuyNow(product)">Comprar</button>
+                  <button class="btn btn-buy" (click)="goToDetail(product._id)">Comprar</button>
                 } @else {
                   <button class="btn btn-login" (click)="triggerAuthModal('login')">Iniciar Sesión para Comprar</button>
                   <button class="btn btn-register" (click)="triggerAuthModal('register')">Registrarse</button>

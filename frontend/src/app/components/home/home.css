@@ -76,6 +76,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.product-name:hover {
+  color: #FD7E14;
 }
 
 .product-material {
