@@ -55,4 +55,8 @@ export class Header implements OnInit, OnDestroy {
   navigateToHome() {
     this.router.navigate(['/']);
   }
+
+  navigateToMyOrders() {
+    this.router.navigate(['/mis-compras']);
+  }
 }

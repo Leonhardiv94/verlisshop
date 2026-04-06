@@ -68,6 +68,16 @@
   color: #FD7E14;
 }
 
+.mis-compras-btn {
+  background-color: transparent !important;
+  color: #FFDF00 !important;
+  border: 1px dashed #FFDF00 !important;
+}
+
+.mis-compras-btn:hover {
+  background-color: rgba(255, 223, 0, 0.1) !important;
+}
+
 .admin-menu-btn {
   background-color: #FD7E14;
   color: #FFFFFF;

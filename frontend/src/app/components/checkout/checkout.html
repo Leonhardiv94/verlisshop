@@ -5,7 +5,20 @@
     Cancelar Compra
   </button>
 
-  @if (isLoading) {
+  @if (orderSuccess) {
+    <div class="success-box bounce-in">
+      <div class="sc-icon">
+        <svg viewBox="0 0 24 24" width="60" height="60" stroke="#28a745" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+      </div>
+      <h2>¡Compra Exitosa!</h2>
+      <p class="sc-desc">Tu pago de simulación fue aprobado y la orden está registrada.</p>
+      <div class="sc-code-box">
+        Código de Orden: <strong>{{ createdOrderCode }}</strong>
+      </div>
+      <p class="sc-instruction">Por favor, dirígete a la sección de "Mis Compras" para hacer seguimiento al estado de tu envío.</p>
+      <button class="btn-goto-purchases" (click)="goToMyOrders()">Explorar Mis Compras</button>
+    </div>
+  } @else if (isLoading) {
     <div class="loader-box">Ensamblando tu punto de pago...</div>
   } @else if (product) {
     <div class="chk-wrapper">

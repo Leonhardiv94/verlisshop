@@ -14,6 +14,17 @@
 }
 .back-btn:hover { background: #343A40; color: white; border-color: #6C757D; }
 
+/* Success Box */
+.success-box { background: #212529; border: 2px solid #28a745; border-radius: 12px; padding: 50px 30px; text-align: center; max-width: 600px; margin: 40px auto; box-shadow: 0 15px 40px rgba(40, 167, 69, 0.2); }
+.sc-icon { margin-bottom: 20px; }
+.success-box h2 { color: #fff; font-size: 2.5rem; margin: 0 0 15px; }
+.sc-desc { color: #ADB5BD; font-size: 1.1rem; margin-bottom: 25px; }
+.sc-code-box { background: rgba(40, 167, 69, 0.1); padding: 15px; border-radius: 8px; border: 1px dashed #28a745; color: #fff; font-size: 1.2rem; margin-bottom: 25px; }
+.sc-code-box strong { color: #28a745; letter-spacing: 2px; }
+.sc-instruction { color: #DEE2E6; margin-bottom: 30px; font-size: 1rem;}
+.btn-goto-purchases { background: #FD7E14; color: white; border: none; padding: 16px 32px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(253, 126, 20, 0.3); }
+.btn-goto-purchases:hover { background: #e06c00; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(253, 126, 20, 0.4); }
+
 .chk-wrapper {
   display: grid;
   grid-template-columns: 1.6fr 1fr;

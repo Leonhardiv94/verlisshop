@@ -1,0 +1,46 @@
+<div class="orders-container">
+  <h2 class="page-title">Mis Compras</h2>
+
+  @if (isLoading) {
+    <div class="loader-box">Cargando tu historial de compras...</div>
+  } @else if (orders.length === 0) {
+    <div class="empty-state">
+      <h3>Todavía no tienes compras registradas.</h3>
+      <p>Descubre nuestro catálogo y estrena hoy mismo.</p>
+      <button class="btn-shop" (click)="goShopping()">Ir a comprar</button>
+    </div>
+  } @else {
+    <div class="orders-list">
+      @for (order of orders; track order._id) {
+        <div class="order-card bounce-in">
+          <div class="order-img">
+            <img [src]="order.productSnapshot.fotoPrincipal || 'assets/placeholder.jpg'" [alt]="order.productSnapshot.nombre" />
+          </div>
+          
+          <div class="order-details">
+            <div class="od-header">
+              <h3 class="od-title">{{ order.productSnapshot.nombre }}</h3>
+              <span class="od-code">Cód de Orden: <strong>{{ order.codigoOrden }}</strong></span>
+            </div>
+            
+            <div class="od-specs">
+              <p><strong>Cód Producto:</strong> #{{ order.productSnapshot.codigo }}</p>
+              @if (order.tallaEscogida) {
+                <p><strong>Talla:</strong> {{ order.tallaEscogida }}</p>
+              }
+              <p><strong>Cantidad:</strong> {{ order.cantidad }} unidades</p>
+              <p><strong>Total Pagado:</strong> <span class="highlight-price">${{ order.totalPagar | number:'1.0-0' }}</span></p>
+            </div>
+          </div>
+
+          <div class="order-status">
+            <div class="status-badge" [class.badge-pending]="order.estado === 'Pedido recibido por el vendedor'">
+              {{ order.estado }}
+            </div>
+            <p class="od-date">Fecha: {{ order.createdAt | date:'dd/MMM/yyyy' }} a las {{ order.createdAt | date:'HH:mm' }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

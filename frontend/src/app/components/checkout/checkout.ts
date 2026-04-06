@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductService, Product } from '../../services/product.service';
 import { Auth } from '../../services/auth';
+import { OrderService } from '../../services/order.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -36,6 +37,10 @@ export class Checkout implements OnInit, OnDestroy {
   addressToDelete: any = null;
   isDeleting = false;
 
+  // Order Creation State
+  orderSuccess = false;
+  createdOrderCode = '';
+
   private routeSub: Subscription = new Subscription();
   private authSub: Subscription = new Subscription();
 
@@ -44,6 +49,7 @@ export class Checkout implements OnInit, OnDestroy {
     private router: Router,
     private productService: ProductService,
     private authService: Auth,
+    private orderService: OrderService,
     private location: Location
   ) {}
 
@@ -175,15 +181,29 @@ export class Checkout implements OnInit, OnDestroy {
 
   processOrderMock(addressPayload: any) {
     const orderData = {
-      product: this.product,
+      productId: this.product?._id,
       tallaEscogida: this.talla,
       cantidad: this.cantidad,
       direccionEnvio: addressPayload,
-      referencia: addressPayload.referencia, // Already bundled inside address
+      costoEnvio: this.shippingCost,
       totalPagar: this.totalValue
     };
 
-    console.log('Orden lista para pagar:', orderData);
-    alert('Orden ensamblada. Referencia verificada. Redirigiendo a pasarela de pago... (en construcción)');
+    console.log('Creando orden de compra en backend...', orderData);
+    
+    this.orderService.createOrder(orderData).subscribe({
+      next: (res) => {
+        this.createdOrderCode = res.order.codigoOrden;
+        this.orderSuccess = true;
+      },
+      error: (err) => {
+        console.error('Error procesando pago:', err);
+        alert('Lo sentimos, ocurrió un error procesando la compra.');
+      }
+    });
+  }
+
+  goToMyOrders() {
+    this.router.navigate(['/mis-compras']);
   }
 }

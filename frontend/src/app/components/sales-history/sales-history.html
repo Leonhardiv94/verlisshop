@@ -1,0 +1,51 @@
+<div class="admin-panel orders-container">
+  <h2 class="page-title">Historial de Ventas (Admin)</h2>
+
+  @if (isLoading) {
+    <div class="loader-box">Cargando el historial global de ventas...</div>
+  } @else if (orders.length === 0) {
+    <div class="empty-state">
+      <h3>No hay ventas registradas aún en el sistema.</h3>
+      <p>Esperando a que caiga el primer pedido mágico.</p>
+    </div>
+  } @else {
+    <div class="orders-list">
+      @for (order of orders; track order._id) {
+        <div class="order-card bounce-in">
+          <div class="order-img">
+            <img [src]="order.productSnapshot.fotoPrincipal || 'assets/placeholder.jpg'" [alt]="order.productSnapshot.nombre" />
+          </div>
+          
+          <div class="order-details">
+            <div class="od-header">
+              <h3 class="od-title">{{ order.productSnapshot.nombre }}</h3>
+              <span class="od-code">Cód Orden: <strong>{{ order.codigoOrden }}</strong></span>
+            </div>
+            
+            <div class="customer-info">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span><strong>Comprador:</strong> {{ order.user?.nombres }} {{ order.user?.apellidos }} (<a href="mailto:{{order.user?.correo}}">{{ order.user?.correo }}</a>)</span>
+            </div>
+
+            <div class="od-specs">
+              <p><strong>Cód Producto:</strong> #{{ order.productSnapshot.codigo }}</p>
+              @if (order.tallaEscogida) {
+                <p><strong>Talla:</strong> {{ order.tallaEscogida }}</p>
+              }
+              <p><strong>Cantidad:</strong> {{ order.cantidad }} unidades</p>
+              <p><strong>Total Cobrado:</strong> <span class="highlight-price">${{ order.totalPagar | number:'1.0-0' }}</span></p>
+            </div>
+          </div>
+
+          <div class="order-status">
+            <div class="status-badge" [class.badge-pending]="order.estado === 'Pedido recibido por el vendedor'">
+              {{ order.estado }}
+            </div>
+            <p class="od-date">Fecha: {{ order.createdAt | date:'dd/MMM/yyyy' }} | Hora: {{ order.createdAt | date:'HH:mm' }}</p>
+            <button class="btn-manage">Gestionar Estado</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

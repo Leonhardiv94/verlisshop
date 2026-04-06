@@ -24,6 +24,7 @@
           </div>
           <span class="user-name">Admin: {{ currentUser?.nombres }}</span>
         </div>
+        <button class="nav-btn mis-compras-btn" (click)="navigateToMyOrders()">Mis Compras</button>
         <button class="logout" (click)="onLogout()">Cerrar sesión</button>
       } @else {
         <button class="text-btn outline" (click)="navigateToHome()">Inicio</button>
@@ -41,6 +42,8 @@
           </div>
           <span class="user-name">{{ currentUser?.nombres }} {{ currentUser?.apellidos }}</span>
         </div>
+        
+        <button class="nav-btn mis-compras-btn" (click)="navigateToMyOrders()">Mis Compras</button>
 
         <button class="icon-btn cart-btn" title="Carrito de compras">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
