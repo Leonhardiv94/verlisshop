@@ -24,7 +24,12 @@
               <label class="radio-card" [class.active]="selectedAddressIndex === $index">
                 <input type="radio" name="addressMode" [value]="$index" [(ngModel)]="selectedAddressIndex" />
                 <div class="card-content">
-                  <h4>{{ dir.direccion }}</h4>
+                  <div class="card-header-flex">
+                    <h4>{{ dir.direccion }}</h4>
+                    <button class="btn-delete-addr" (click)="promptDeleteAddress($event, dir)" title="Eliminar dirección">
+                      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                  </div>
                   <p><strong>Ubicación:</strong> {{ dir.ciudad }}, {{ dir.pais }}</p>
                   <p class="ref-text"><strong>Referencia:</strong> {{ dir.referencia }}</p>
                 </div>
@@ -114,6 +119,26 @@
           Ir a Pagar de Forma Segura
         </button>
 
+      </div>
+    </div>
+  }
+
+  <!-- Modal Confirmación Eliminación -->
+  @if (addressToDelete) {
+    <div class="modal-overlay">
+      <div class="modal-card bounce-in">
+        <h3 class="modal-title">¿Eliminar esta dirección?</h3>
+        <p class="modal-desc">
+          Vas a eliminar permanentemente de tu libreta la siguiente dirección: 
+          <strong>{{ addressToDelete.direccion }} ({{ addressToDelete.ciudad }})</strong>.
+        </p>
+
+        <div class="modal-actions">
+          <button class="btn-cancel-modal" (click)="cancelDeleteAddress()" [disabled]="isDeleting">Cancelar</button>
+          <button class="btn-confirm-delete" (click)="confirmDeleteAddress()" [disabled]="isDeleting">
+            {{ isDeleting ? 'Eliminando...' : 'Sí, Eliminar' }}
+          </button>
+        </div>
       </div>
     </div>
   }

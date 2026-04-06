@@ -32,6 +32,10 @@ export class Checkout implements OnInit, OnDestroy {
   // Pricing
   shippingCost = 0; // Administrable luego en backend
 
+  // Delete Address Modal State
+  addressToDelete: any = null;
+  isDeleting = false;
+
   private routeSub: Subscription = new Subscription();
   private authSub: Subscription = new Subscription();
 
@@ -102,6 +106,34 @@ export class Checkout implements OnInit, OnDestroy {
 
   goBack() {
     this.location.back();
+  }
+
+  promptDeleteAddress(event: Event, address: any) {
+    event.stopPropagation(); // Avoid triggering radio card selection
+    this.addressToDelete = address;
+  }
+
+  cancelDeleteAddress() {
+    this.addressToDelete = null;
+  }
+
+  confirmDeleteAddress() {
+    if (!this.addressToDelete || !this.addressToDelete._id) return;
+    this.isDeleting = true;
+
+    this.authService.deleteSavedAddress(this.addressToDelete._id).subscribe({
+      next: (res) => {
+        this.isDeleting = false;
+        this.addressToDelete = null;
+        // The currentUser$ subscription will auto-update the list
+      },
+      error: (err) => {
+        console.error('Error deleting address:', err);
+        alert('Ocurrió un error eliminando la dirección.');
+        this.isDeleting = false;
+        this.addressToDelete = null;
+      }
+    });
   }
 
   onProceedToPay() {

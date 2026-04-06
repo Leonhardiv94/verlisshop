@@ -167,4 +167,19 @@ const addSavedAddress = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getProfile, updateGeneral, updatePhones, updateCredentials, updateAvatar, addSavedAddress };
+const deleteSavedAddress = async (req, res) => {
+  try {
+    const { addressId } = req.params;
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+    user.direccionesGuardadas.pull({ _id: addressId });
+    await user.save();
+
+    res.json({ message: 'Dirección eliminada', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error eliminando dirección', error: error.message });
+  }
+};
+
+module.exports = { register, login, getProfile, updateGeneral, updatePhones, updateCredentials, updateAvatar, addSavedAddress, deleteSavedAddress };

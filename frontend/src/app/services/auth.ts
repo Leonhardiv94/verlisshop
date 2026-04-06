@@ -105,6 +105,17 @@ export class Auth {
     );
   }
 
+  deleteSavedAddress(addressId: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/profile/address/${addressId}`, this.getAuthHeaders()).pipe(
+      tap(res => {
+        if(res.user) {
+          localStorage.setItem(this.userKey, JSON.stringify(res.user));
+          this.currentUserSubject.next(res.user);
+        }
+      })
+    );
+  }
+
   logout() {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
