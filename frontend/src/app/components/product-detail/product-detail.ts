@@ -5,11 +5,13 @@ import { ProductService, Product } from '../../services/product.service';
 import { Auth } from '../../services/auth';
 import { ModalService } from '../../services/modal.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css'
 })
@@ -21,6 +23,7 @@ export class ProductDetail implements OnInit, OnDestroy {
   // UI State
   selectedImage = '';
   selectedTalla = '';
+  cantidad: number = 1;
   isLoggedIn = false;
   
   private routeSub: Subscription = new Subscription();
@@ -28,6 +31,7 @@ export class ProductDetail implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private productService: ProductService,
     private authService: Auth,
     private modalService: ModalService,
@@ -76,6 +80,14 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.selectedTalla = talla;
   }
 
+  increaseQty() {
+    if (this.cantidad < 20) this.cantidad++; // Limit to max reasonable quantity for retail
+  }
+
+  decreaseQty() {
+    if (this.cantidad > 1) this.cantidad--;
+  }
+
   goBack() {
     this.location.back();
   }
@@ -98,6 +110,15 @@ export class ProductDetail implements OnInit, OnDestroy {
       alert('Por favor selecciona una talla para continuar.');
       return;
     }
-    console.log('Comprando ahora...', this.product?.nombre);
+    
+    // Redirect to checkout passing ID, Talla, and Cantidad via URL Search Params
+    const queryParams: any = { 
+      producto: this.product?._id,
+      cantidad: this.cantidad 
+    };
+    if (this.selectedTalla) {
+      queryParams.talla = this.selectedTalla;
+    }
+    this.router.navigate(['/checkout'], { queryParams });
   }
 }

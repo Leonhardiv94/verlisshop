@@ -6,12 +6,14 @@ import { Home } from './components/home/home';
 import { EditProduct } from './components/edit-product/edit-product';
 import { DeleteProduct } from './components/delete-product/delete-product';
 import { ProductDetail } from './components/product-detail/product-detail';
+import { Checkout } from './components/checkout/checkout';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'profile', component: UserProfile },
   { path: 'help', component: Help },
   { path: 'producto/:id', component: ProductDetail },
+  { path: 'checkout', component: Checkout },
   { path: 'admin/crear-producto', component: CreateProduct },
   { path: 'admin/modificar-producto', component: EditProduct },
   { path: 'admin/eliminar-producto', component: DeleteProduct }

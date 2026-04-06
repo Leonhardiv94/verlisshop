@@ -54,6 +54,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  direccionesGuardadas: [{
+    pais: String,
+    ciudad: String,
+    direccion: String,
+    referencia: String
+  }],
   password: {
     type: String,
     required: [true, 'La contraseña es obligatoria'],

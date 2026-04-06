@@ -84,6 +84,16 @@
           </div>
         }
 
+        <!-- Cantidad Selector -->
+        <div class="p-quantity">
+          <h3 class="sizes-title">Cantidad:</h3>
+          <div class="qty-stepper">
+            <button class="qty-btn" (click)="decreaseQty()" [disabled]="cantidad <= 1">-</button>
+            <input type="number" class="qty-input" [(ngModel)]="cantidad" readonly />
+            <button class="qty-btn" (click)="increaseQty()">+</button>
+          </div>
+        </div>
+
         <!-- Actions -->
         <div class="action-zone">
           @if (isLoggedIn) {

@@ -94,6 +94,17 @@ export class Auth {
     );
   }
 
+  addSavedAddress(data: { pais: string, ciudad: string, direccion: string, referencia: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/profile/address`, data, this.getAuthHeaders()).pipe(
+      tap(res => {
+        if(res.user) {
+          localStorage.setItem(this.userKey, JSON.stringify(res.user));
+          this.currentUserSubject.next(res.user);
+        }
+      })
+    );
+  }
+
   logout() {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);

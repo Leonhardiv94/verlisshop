@@ -151,4 +151,20 @@ const updateAvatar = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getProfile, updateGeneral, updatePhones, updateCredentials, updateAvatar };
+const addSavedAddress = async (req, res) => {
+  try {
+    const { pais, ciudad, direccion, referencia } = req.body;
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+    
+    // Si la lista no existe, mongoose la iniciará vacía de todas formas gracias al schema
+    user.direccionesGuardadas.push({ pais, ciudad, direccion, referencia });
+    await user.save();
+    
+    res.json({ message: 'Dirección guardada con referencia', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error guardando dirección múltiple', error: error.message });
+  }
+};
+
+module.exports = { register, login, getProfile, updateGeneral, updatePhones, updateCredentials, updateAvatar, addSavedAddress };

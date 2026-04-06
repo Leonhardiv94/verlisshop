@@ -1,0 +1,120 @@
+<div class="checkout-container">
+  
+  <button class="back-btn" (click)="goBack()">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    Cancelar Compra
+  </button>
+
+  @if (isLoading) {
+    <div class="loader-box">Ensamblando tu punto de pago...</div>
+  } @else if (product) {
+    <div class="chk-wrapper">
+      
+      <!-- Panel Izquierdo: Formulario Envío -->
+      <div class="chk-main bounce-left">
+        <h2 class="chk-title">Detalles del Envío</h2>
+        <p class="chk-subtitle">Asegúrate de dejarnos todo claro para que tu artículo llegue sin problemas.</p>
+        
+        <div class="address-section">
+          
+          <!-- Ciclo de Direcciones Guardadas Previas -->
+          @if (currentUser?.direccionesGuardadas?.length > 0) {
+            <h3 class="saved-title">Mis direcciones de envío</h3>
+            @for (dir of currentUser.direccionesGuardadas; track $index) {
+              <label class="radio-card" [class.active]="selectedAddressIndex === $index">
+                <input type="radio" name="addressMode" [value]="$index" [(ngModel)]="selectedAddressIndex" />
+                <div class="card-content">
+                  <h4>{{ dir.direccion }}</h4>
+                  <p><strong>Ubicación:</strong> {{ dir.ciudad }}, {{ dir.pais }}</p>
+                  <p class="ref-text"><strong>Referencia:</strong> {{ dir.referencia }}</p>
+                </div>
+              </label>
+            }
+          }
+
+          <label class="radio-card" [class.active]="selectedAddressIndex === -1">
+            <input type="radio" name="addressMode" [value]="-1" [(ngModel)]="selectedAddressIndex" />
+            <div class="card-content">
+              <h4>Usar una dirección nueva</h4>
+              <p class="fade-text">O rellenar referencia de tu dirección de registro.</p>
+            </div>
+          </label>
+        </div>
+
+        @if (selectedAddressIndex === -1) {
+          <div class="new-address-form slide-down">
+            <div class="row">
+              <div class="form-group half">
+                <label>País de Destino</label>
+                <input type="text" [(ngModel)]="newAddress.pais" placeholder="Ej. Colombia" />
+              </div>
+              <div class="form-group half">
+                <label>Ciudad</label>
+                <input type="text" [(ngModel)]="newAddress.ciudad" placeholder="Ej. Medellín" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Dirección Específica</label>
+              <input type="text" [(ngModel)]="newAddress.direccion" placeholder="Ej. Calle 10 # 20-30, Apto 401" />
+            </div>
+
+            <div class="form-group ref-group">
+              <label class="required-label">Punto de Referencia o Descripción del Lugar *</label>
+              <textarea 
+                [(ngModel)]="newAddress.referencia" 
+                placeholder="Obligatorio. Ej: Casa de fachada azul al lado de la panadería principal. Timbre 2." 
+                rows="3" 
+                required>
+              </textarea>
+              <small class="save-disclaimer">Esta dirección se guardará en tu libreta para compras futuras.</small>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Panel Derecho: Resumen Financiero -->
+      <div class="chk-summary bounce-right">
+        <h3 class="sum-title">Resumen de tu Orden</h3>
+        
+        <div class="product-line">
+          <div class="p-img-box">
+            <img [src]="product.fotoPrincipal" [alt]="product.nombre" />
+          </div>
+          <div class="p-info">
+            <h4 class="p-name">{{ product.nombre }}</h4>
+            <span class="p-code">Cód: #{{ product.codigo || 'N/A' }}</span>
+            @if (talla) {
+              <span class="p-talla">Talla Seleccionada: {{ talla }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="sum-breakdown">
+          <div class="sum-row">
+            <span>Subtotal (Producto)</span>
+            <span>${{ product.precio | number:'1.0-0' }}</span>
+          </div>
+          <div class="sum-row">
+            <span>Costo de Envío</span>
+            @if (shippingCost === 0) {
+              <span class="free-shipping">Gratis</span>
+            } @else {
+              <span>${{ shippingCost | number:'1.0-0' }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="sum-total">
+          <span class="t-label">TOTAL A PAGAR</span>
+          <span class="t-value">${{ totalValue | number:'1.0-0' }}</span>
+        </div>
+
+        <button class="btn-pay" (click)="onProceedToPay()">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Ir a Pagar de Forma Segura
+        </button>
+
+      </div>
+    </div>
+  }
+</div>
