@@ -38,11 +38,26 @@
           </div>
 
           <div class="order-status">
-            <div class="status-badge" [class.badge-pending]="order.estado === 'Pedido recibido por el vendedor'">
+            <div class="status-badge" 
+              [class.badge-pending]="order.estado === 'Pedido recibido por el vendedor'"
+              [class.badge-shipped]="order.estado === 'Pedido despachado'"
+              [class.badge-delivered]="order.estado === 'Pedido entregado'"
+              [class.badge-returned]="order.estado === 'Pedido devuelto'"
+              [class.badge-cancelled]="order.estado === 'Pedido cancelado'">
               {{ order.estado }}
             </div>
             <p class="od-date">Fecha: {{ order.createdAt | date:'dd/MMM/yyyy' }} | Hora: {{ order.createdAt | date:'HH:mm' }}</p>
-            <button class="btn-manage">Gestionar Estado</button>
+            
+            <div class="manage-status-box">
+              <h4 class="manage-title">Gestionar Estado:</h4>
+              <select class="status-select" #statusSelect (change)="onStatusChange(order._id, statusSelect.value)">
+                <option [selected]="order.estado === 'Pedido recibido por el vendedor'" value="Pedido recibido por el vendedor">Pedido recibido por el vendedor</option>
+                <option [selected]="order.estado === 'Pedido despachado'" value="Pedido despachado">Pedido despachado</option>
+                <option [selected]="order.estado === 'Pedido entregado'" value="Pedido entregado">Pedido entregado</option>
+                <option [selected]="order.estado === 'Pedido devuelto'" value="Pedido devuelto">Pedido devuelto</option>
+                <option [selected]="order.estado === 'Pedido cancelado'" value="Pedido cancelado">Pedido cancelado</option>
+              </select>
+            </div>
           </div>
         </div>
       }

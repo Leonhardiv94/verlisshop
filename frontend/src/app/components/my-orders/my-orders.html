@@ -34,7 +34,12 @@
           </div>
 
           <div class="order-status">
-            <div class="status-badge" [class.badge-pending]="order.estado === 'Pedido recibido por el vendedor'">
+            <div class="status-badge" 
+              [class.badge-pending]="order.estado === 'Pedido recibido por el vendedor'"
+              [class.badge-shipped]="order.estado === 'Pedido despachado'"
+              [class.badge-delivered]="order.estado === 'Pedido entregado'"
+              [class.badge-returned]="order.estado === 'Pedido devuelto'"
+              [class.badge-cancelled]="order.estado === 'Pedido cancelado'">
               {{ order.estado }}
             </div>
             <p class="od-date">Fecha: {{ order.createdAt | date:'dd/MMM/yyyy' }} a las {{ order.createdAt | date:'HH:mm' }}</p>

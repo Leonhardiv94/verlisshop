@@ -31,8 +31,12 @@
 .highlight-price { color: #28a745; font-weight: bold; font-size: 1.1rem;}
 
 .order-status { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; min-width: 200px; border-left: 1px dashed #495057; padding-left: 20px;}
-.status-badge { padding: 8px 15px; border-radius: 8px; font-weight: bold; text-align: center; width: 100%; }
+.status-badge { padding: 8px 15px; border-radius: 8px; font-weight: bold; text-align: center; width: 100%; font-size: 0.9rem;}
 .badge-pending { background: rgba(253, 126, 20, 0.1); color: #FD7E14; border: 1px solid #FD7E14; }
+.badge-shipped { background: rgba(0, 123, 255, 0.1); color: #007bff; border: 1px solid #007bff; }
+.badge-delivered { background: rgba(40, 167, 69, 0.1); color: #28a745; border: 1px solid #28a745; }
+.badge-returned { background: rgba(255, 193, 7, 0.1); color: #ffc107; border: 1px solid #ffc107; }
+.badge-cancelled { background: rgba(220, 53, 69, 0.1); color: #dc3545; border: 1px solid #dc3545; }
 .od-date { margin: 15px 0 0; color: #6C757D; font-size: 0.85rem; }
 
 @media (max-width: 800px) {

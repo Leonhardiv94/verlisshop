@@ -5,7 +5,7 @@ const User = require('../models/user.model');
 const createOrder = async (req, res) => {
   try {
     const { productId, tallaEscogida, cantidad, direccionEnvio, costoEnvio, totalPagar } = req.body;
-    
+
     // Validar producto
     const product = await Product.findById(productId);
     if (!product) {
@@ -68,4 +68,25 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, getMyOrders, getAllOrders };
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const { id } = req.params;
+
+    const user = await User.findById(req.userId);
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ error: 'Acceso denegado. Permisos requeridos.' });
+    }
+
+    const order = await Order.findByIdAndUpdate(id, { estado: status }, { new: true }).populate('user', 'nombres apellidos correo avatar');
+    if (!order) {
+      return res.status(404).json({ message: 'Orden no encontrada' });
+    }
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: 'Error actualizando estado', error: error.message });
+  }
+};
+
+module.exports = { createOrder, getMyOrders, getAllOrders, updateOrderStatus };
