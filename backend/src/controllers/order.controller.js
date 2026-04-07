@@ -29,7 +29,8 @@ const createOrder = async (req, res) => {
       direccionEnvio,
       costoEnvio,
       totalPagar,
-      codigoOrden: shortCode
+      codigoOrden: shortCode,
+      historialEstados: [{ estado: 'Pedido recibido por el vendedor' }]
     });
 
     await order.save();
@@ -78,12 +79,18 @@ const updateOrderStatus = async (req, res) => {
       return res.status(403).json({ error: 'Acceso denegado. Permisos requeridos.' });
     }
 
-    const order = await Order.findByIdAndUpdate(id, { estado: status }, { new: true }).populate('user', 'nombres apellidos correo avatar');
+    const order = await Order.findById(id);
     if (!order) {
       return res.status(404).json({ message: 'Orden no encontrada' });
     }
 
-    res.json(order);
+    order.estado = status;
+    order.historialEstados.push({ estado: status, fecha: new Date() });
+    await order.save();
+    
+    // Poblamos para devolver al front
+    const updatedOrder = await Order.findById(id).populate('user', 'nombres apellidos correo avatar');
+    res.json(updatedOrder);
   } catch (error) {
     res.status(500).json({ message: 'Error actualizando estado', error: error.message });
   }

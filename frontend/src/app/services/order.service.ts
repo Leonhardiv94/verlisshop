@@ -25,6 +25,7 @@ export interface Order {
   estado: string;
   codigoOrden: string;
   createdAt: string;
+  historialEstados: { estado: string, fecha: string }[];
 }
 
 @Injectable({

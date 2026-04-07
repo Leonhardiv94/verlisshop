@@ -46,8 +46,20 @@
               [class.badge-cancelled]="order.estado === 'Pedido cancelado'">
               {{ order.estado }}
             </div>
-            <p class="od-date">Fecha: {{ order.createdAt | date:'dd/MMM/yyyy' }} | Hora: {{ order.createdAt | date:'HH:mm' }}</p>
             
+            <div class="status-history-box">
+              <p class="history-label">Trazabilidad:</p>
+              <ul class="history-list">
+                @for (h of order.historialEstados; track $index) {
+                  <li>
+                    <span class="h-dot"></span>
+                    <span class="h-text">{{ h.estado }}</span>
+                    <span class="h-date">{{ h.fecha | date:'dd/MMM HH:mm' }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
             <div class="manage-status-box">
               <h4 class="manage-title">Gestionar Estado:</h4>
               <select class="status-select" #statusSelect (change)="onStatusChange(order._id, statusSelect.value)">

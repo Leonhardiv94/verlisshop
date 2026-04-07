@@ -39,9 +39,16 @@
 .badge-shipped { background: rgba(0, 123, 255, 0.1); color: #007bff; border: 1px solid #007bff; }
 .badge-delivered { background: rgba(40, 167, 69, 0.1); color: #28a745; border: 1px solid #28a745; }
 .badge-returned { background: rgba(255, 193, 7, 0.1); color: #ffc107; border: 1px solid #ffc107; }
+
 .badge-cancelled { background: rgba(220, 53, 69, 0.1); color: #dc3545; border: 1px solid #dc3545; }
 
-.od-date { margin: 8px 0 15px 0; color: #6C757D; font-size: 0.85rem; text-align: right;}
+.status-history-box { width: 100%; margin: 15px 0; padding: 10px; background: rgba(0,0,0,0.15); border-radius: 8px; border-left: 2px solid #FD7E14; }
+.history-label { font-size: 0.75rem; color: #ADB5BD; text-transform: uppercase; margin: 0 0 8px 0; font-weight: bold;}
+.history-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.history-list li { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: #DEE2E6; position: relative; }
+.h-dot { width: 6px; height: 6px; background: #FD7E14; border-radius: 50%; flex-shrink: 0; }
+.h-text { flex-grow: 1; }
+.h-date { color: #6C757D; font-size: 0.75rem; white-space: nowrap; }
 
 .manage-status-box { align-self: stretch; margin-top: auto; padding-top: 15px; border-top: 1px solid #343a40;}
 .manage-title { color: #ADB5BD; font-size: 0.85rem; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px;}
