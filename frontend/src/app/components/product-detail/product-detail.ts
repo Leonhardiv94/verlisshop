@@ -27,9 +27,16 @@ export class ProductDetail implements OnInit, OnDestroy {
   isLoggedIn = false;
   currentUser: any = null;
 
+  // Notifications
+  notification = { show: false, message: '', type: 'success' as 'success' | 'error' };
+
   // Admin Reply logic
   replyingToId: string | null = null;
   adminReplyText = '';
+
+  // User Edit Comment logic
+  editingReviewId: string | null = null;
+  editCommentText = '';
   
   private routeSub: Subscription = new Subscription();
   private authSub: Subscription = new Subscription();
@@ -131,6 +138,40 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.router.navigate(['/checkout'], { queryParams });
   }
 
+  // --- REVIEW EDIT METHODS ---
+  startEdit(review: any) {
+    this.editingReviewId = review._id;
+    this.editCommentText = review.comment;
+  }
+
+  cancelEdit() {
+    this.editingReviewId = null;
+    this.editCommentText = '';
+  }
+
+  submitUpdateReview(reviewId: string) {
+    if (!this.product || !this.editCommentText.trim()) return;
+
+    this.productService.updateReview(this.product._id || '', reviewId, this.editCommentText).subscribe({
+      next: (res) => {
+        this.product = res.product;
+        this.cancelEdit();
+        this.showNotification('Comentario actualizado correctamente.', 'success');
+      },
+      error: (err) => {
+        console.error('Error updating review:', err);
+        this.showNotification('No se pudo actualizar el comentario.', 'error');
+      }
+    });
+  }
+
+  private showNotification(message: string, type: 'success' | 'error') {
+    this.notification = { show: true, message, type };
+    setTimeout(() => {
+      this.notification.show = false;
+    }, 4000);
+  }
+
   // Star Rating Helper
   getStarArray(rating: number) {
     return Array(5).fill(0).map((_, i) => i < rating);
@@ -152,11 +193,11 @@ export class ProductDetail implements OnInit, OnDestroy {
       next: (res) => {
         this.product = res.product;
         this.cancelReply();
-        alert('Respuesta enviada exitosamente.');
+        this.showNotification('Respuesta enviada exitosamente.', 'success');
       },
       error: (err) => {
         console.error('Error replying:', err);
-        alert('No se pudo enviar la respuesta.');
+        this.showNotification('No se pudo enviar la respuesta.', 'error');
       }
     });
   }

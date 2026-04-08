@@ -16,6 +16,9 @@ export class MyOrders implements OnInit {
   orders: Order[] = [];
   isLoading = true;
 
+  // Notifications
+  notification = { show: false, message: '', type: 'success' as 'success' | 'error' };
+
   // Rating Modal
   showRatingModal = false;
   selectedOrderForRating: Order | null = null;
@@ -65,6 +68,13 @@ export class MyOrders implements OnInit {
     this.ratingStars = n;
   }
 
+  private showNotification(message: string, type: 'success' | 'error') {
+    this.notification = { show: true, message, type };
+    setTimeout(() => {
+      this.notification.show = false;
+    }, 4000);
+  }
+
   saveRating() {
     if (!this.selectedOrderForRating || !this.selectedOrderForRating.product) return;
     
@@ -77,13 +87,13 @@ export class MyOrders implements OnInit {
 
     this.productService.addReview(productId, reviewData).subscribe({
       next: (res) => {
-        alert('¡Gracias por tu calificación!');
+        this.showNotification('¡Gracias por tu calificación!', 'success');
         this.closeRatingModal();
         // Opcional: marcar la orden como calificada localmente si agregas un campo en el modelo
       },
       error: (err) => {
         console.error('Error saving rating:', err);
-        alert('No se pudo guardar la calificación.');
+        this.showNotification('No se pudo guardar la calificación.', 'error');
       }
     });
   }

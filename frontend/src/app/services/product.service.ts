@@ -93,6 +93,10 @@ export class ProductService {
     return this.http.post(`${this.apiUrl}/${productId}/review`, review, { headers: this.getHeaders() });
   }
 
+  updateReview(productId: string, reviewId: string, comment: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${productId}/review/${reviewId}`, { comment }, { headers: this.getHeaders() });
+  }
+
   replyReview(productId: string, reviewId: string, reply: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${productId}/reply/${reviewId}`, { reply }, { headers: this.getHeaders() });
   }

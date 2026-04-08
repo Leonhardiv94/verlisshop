@@ -182,3 +182,31 @@ exports.replyReview = async (req, res) => {
     res.status(500).json({ error: 'Error al responder' });
   }
 };
+
+exports.updateReview = async (req, res) => {
+  try {
+    const { comment } = req.body;
+    const { productId, reviewId } = req.params;
+    
+    const product = await Product.findById(productId);
+    const review = product.reviews.id(reviewId);
+
+    if (!review) return res.status(404).json({ error: 'Comentario no encontrado' });
+
+    // Solo el dueño del comentario o un admin puede editar
+    if (review.user.toString() !== req.userId) {
+      const user = await User.findById(req.userId);
+      if (!user || user.role !== 'admin') {
+        return res.status(403).json({ error: 'No tienes permiso para editar este comentario' });
+      }
+    }
+
+    review.comment = comment;
+    review.createdAt = new Date(); // Opcional: actualizar fecha
+
+    await product.save();
+    res.json({ message: 'Comentario actualizado', product });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar comentario' });
+  }
+};

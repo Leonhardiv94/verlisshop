@@ -20,6 +20,7 @@ router.delete('/:id', authMiddleware, productController.deleteProduct);
 
 // Calificaciones
 router.post('/:id/review', authMiddleware, productController.addReview);
+router.put('/:productId/review/:reviewId', authMiddleware, productController.updateReview);
 router.post('/:productId/reply/:reviewId', authMiddleware, productController.replyReview);
 
 module.exports = router;

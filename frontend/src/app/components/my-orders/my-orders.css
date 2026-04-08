@@ -111,3 +111,16 @@
 .btn-cancel { background: transparent; color: #ADB5BD; border: 1px solid #495057; }
 .btn-save-rating { background: #FD7E14; color: white; border: none; }
 .btn-save-rating:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Notifications */
+.notification-toast {
+  position: fixed; top: 100px; right: 20px; z-index: 11000;
+  padding: 15px 25px; border-radius: 12px; color: white;
+  min-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.notification-toast.success { background: #28a745; border-left: 5px solid #1e7e34; }
+.notification-toast.error { background: #dc3545; border-left: 5px solid #a71d2a; }
+.toast-content { display: flex; align-items: center; gap: 12px; }
+
+@keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }

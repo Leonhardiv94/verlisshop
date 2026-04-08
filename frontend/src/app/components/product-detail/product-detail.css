@@ -198,6 +198,38 @@
 .avg-number { font-size: 1.5rem; font-weight: bold; color: #fff; }
 .total-reviews { color: #ADB5BD; font-size: 0.9rem; }
 
+/* Edit Review */
+.name-edit-row { display: flex; align-items: center; gap: 10px; }
+.btn-edit-comment {
+  background: transparent; border: none; color: #ADB5BD; 
+  font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 2px 6px;
+  border-radius: 4px; transition: 0.2s;
+}
+.btn-edit-comment:hover { background: rgba(253, 126, 20, 0.1); color: #FD7E14; }
+
+.edit-comment-box { margin-bottom: 15px; }
+.edit-comment-box textarea {
+  width: 100%; min-height: 80px; background: #212529; border: 1px solid #FD7E14;
+  border-radius: 8px; color: white; padding: 12px; outline: none; margin-bottom: 10px;
+}
+.edit-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.btn-cancel-edit { background: transparent; border: none; color: #ADB5BD; cursor: pointer; font-size: 0.9rem; }
+.btn-save-edit { background: #28a745; color: white; border: none; padding: 6px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+.btn-save-edit:disabled { opacity: 0.5; }
+
+/* Notifications */
+.notification-toast {
+  position: fixed; top: 100px; right: 20px; z-index: 11000;
+  padding: 15px 25px; border-radius: 12px; color: white;
+  min-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.notification-toast.success { background: #28a745; border-left: 5px solid #1e7e34; }
+.notification-toast.error { background: #dc3545; border-left: 5px solid #a71d2a; }
+.toast-content { display: flex; align-items: center; gap: 12px; }
+
+@keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
 .transparency-alert {
   background: rgba(173, 181, 189, 0.05); border: 1px solid #343A40;
   padding: 12px 20px; border-radius: 10px; display: flex; align-items: center; gap: 15px;
