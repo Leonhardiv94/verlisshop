@@ -36,10 +36,11 @@ export class SalesHistory implements OnInit {
   onStatusChange(orderId: string, newStatus: string) {
     this.orderService.updateOrderStatus(orderId, newStatus).subscribe({
       next: (updatedOrder: Order) => {
-        // Update local state
+        // Update local state and keep history visibility if it was open
         const index = this.orders.findIndex(o => o._id === orderId);
         if (index !== -1) {
-          this.orders[index].estado = newStatus;
+          const wasShowing = this.orders[index]._showHistory;
+          this.orders[index] = { ...updatedOrder, _showHistory: wasShowing };
         }
       },
       error: (err: any) => {
@@ -47,5 +48,9 @@ export class SalesHistory implements OnInit {
         alert('No se pudo actualizar el estado del pedido.');
       }
     });
+  }
+
+  toggleHistory(order: Order) {
+    order._showHistory = !order._showHistory;
   }
 }

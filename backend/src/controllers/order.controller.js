@@ -30,7 +30,7 @@ const createOrder = async (req, res) => {
       costoEnvio,
       totalPagar,
       codigoOrden: shortCode,
-      historialEstados: [{ estado: 'Pedido recibido por el vendedor' }]
+      historialEstados: [{ estado: 'Pedido recibido' }]
     });
 
     await order.save();

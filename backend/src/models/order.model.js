@@ -41,8 +41,8 @@ const orderSchema = new mongoose.Schema({
   },
   estado: {
     type: String,
-    default: 'Pedido recibido por el vendedor',
-    enum: ['Pedido recibido por el vendedor', 'Pedido despachado', 'Pedido entregado', 'Pedido devuelto', 'Pedido cancelado']
+    default: 'Pedido recibido',
+    enum: ['Pedido recibido', 'Pedido despachado', 'Pedido entregado', 'Pedido devuelto', 'Pedido cancelado']
   },
   historialEstados: [
     {

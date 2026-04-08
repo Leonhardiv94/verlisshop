@@ -26,6 +26,7 @@ export interface Order {
   codigoOrden: string;
   createdAt: string;
   historialEstados: { estado: string, fecha: string }[];
+  _showHistory?: boolean; // UI ONLY
 }
 
 @Injectable({

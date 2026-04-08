@@ -39,7 +39,7 @@
 
           <div class="order-status">
             <div class="status-badge" 
-              [class.badge-pending]="order.estado === 'Pedido recibido por el vendedor'"
+              [class.badge-pending]="order.estado === 'Pedido recibido'"
               [class.badge-shipped]="order.estado === 'Pedido despachado'"
               [class.badge-delivered]="order.estado === 'Pedido entregado'"
               [class.badge-returned]="order.estado === 'Pedido devuelto'"
@@ -47,23 +47,30 @@
               {{ order.estado }}
             </div>
             
-            <div class="status-history-box">
-              <p class="history-label">Trazabilidad:</p>
-              <ul class="history-list">
-                @for (h of order.historialEstados; track $index) {
-                  <li>
-                    <span class="h-dot"></span>
-                    <span class="h-text">{{ h.estado }}</span>
-                    <span class="h-date">{{ h.fecha | date:'dd/MMM HH:mm' }}</span>
-                  </li>
-                }
-              </ul>
+            <div class="status-history-box" [class.expanded]="order._showHistory">
+              <div class="history-toggle" (click)="toggleHistory(order)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span class="history-label">Ver Trazabilidad</span>
+                <svg class="chevron" [class.open]="order._showHistory" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              
+              @if (order._showHistory) {
+                <ul class="history-list slide-down">
+                  @for (h of order.historialEstados; track $index) {
+                    <li>
+                      <span class="h-dot"></span>
+                      <span class="h-text">{{ h.estado }}</span>
+                      <span class="h-date">{{ h.fecha | date:'dd/MMM HH:mm' }}</span>
+                    </li>
+                  }
+                </ul>
+              }
             </div>
 
             <div class="manage-status-box">
               <h4 class="manage-title">Gestionar Estado:</h4>
               <select class="status-select" #statusSelect (change)="onStatusChange(order._id, statusSelect.value)">
-                <option [selected]="order.estado === 'Pedido recibido por el vendedor'" value="Pedido recibido por el vendedor">Pedido recibido por el vendedor</option>
+                <option [selected]="order.estado === 'Pedido recibido'" value="Pedido recibido">Pedido recibido</option>
                 <option [selected]="order.estado === 'Pedido despachado'" value="Pedido despachado">Pedido despachado</option>
                 <option [selected]="order.estado === 'Pedido entregado'" value="Pedido entregado">Pedido entregado</option>
                 <option [selected]="order.estado === 'Pedido devuelto'" value="Pedido devuelto">Pedido devuelto</option>

@@ -32,4 +32,8 @@ export class MyOrders implements OnInit {
   goShopping() {
     this.router.navigate(['/']);
   }
+
+  toggleHistory(order: Order) {
+    order._showHistory = !order._showHistory;
+  }
 }
