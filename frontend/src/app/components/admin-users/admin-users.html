@@ -1,0 +1,204 @@
+<div class="admin-user-container">
+  <h2 class="page-title">Gestión de Usuarios</h2>
+
+  <!-- Notification Toast -->
+  @if (notification.show) {
+    <div class="notification-toast" [class]="notification.type">
+      <div class="toast-content">
+        <svg *ngIf="notification.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <svg *ngIf="notification.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        <span>{{ notification.message }}</span>
+      </div>
+    </div>
+  }
+
+  <div class="tab-header">
+    <button [class.active]="activeTab === 'create'" (click)="setTab('create')">Crear Usuario</button>
+    <button [class.active]="activeTab === 'edit'" (click)="setTab('edit')">Modificar Usuario</button>
+    <button [class.active]="activeTab === 'delete'" (click)="setTab('delete')">Eliminar Usuario</button>
+  </div>
+
+  <div class="main-content bounce-in">
+    
+    <!-- Tab Crear -->
+    @if (activeTab === 'create') {
+      <div class="form-card">
+        <h3>Información del Nuevo Usuario</h3>
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Nombres</label>
+            <input type="text" [(ngModel)]="createData.nombres" placeholder="Ej: Juan" />
+          </div>
+          <div class="input-group">
+            <label>Apellidos</label>
+            <input type="text" [(ngModel)]="createData.apellidos" placeholder="Ej: Pérez" />
+          </div>
+          <div class="input-group">
+            <label>Cédula / ID</label>
+            <input type="text" [(ngModel)]="createData.cedula" placeholder="Número de identificación" />
+          </div>
+          <div class="input-group">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" [(ngModel)]="createData.fechaNacimiento" />
+          </div>
+          <div class="input-group">
+            <label>País</label>
+            <input type="text" [(ngModel)]="createData.pais" placeholder="Ej: Colombia" />
+          </div>
+          <div class="input-group">
+            <label>Ciudad</label>
+            <input type="text" [(ngModel)]="createData.ciudad" placeholder="Ej: Medellín" />
+          </div>
+          <div class="input-group">
+            <label>Dirección</label>
+            <input type="text" [(ngModel)]="createData.direccion" placeholder="Calle, Carrera, Barrio" />
+          </div>
+          <div class="input-group">
+            <label>Correo Electrónico</label>
+            <input type="email" [(ngModel)]="createData.correo" placeholder="usuario@correo.com" />
+          </div>
+          <div class="input-group">
+            <label>Contraseña</label>
+            <div class="password-wrapper">
+              <input [type]="showPassC ? 'text' : 'password'" [(ngModel)]="createData.password" placeholder="Mín 8 caracteres" />
+              <button class="toggle-pass" (click)="showPassC = !showPassC">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Confirmar Contraseña</label>
+            <div class="password-wrapper">
+              <input [type]="showPassCC ? 'text' : 'password'" [(ngModel)]="createData.confirmPassword" placeholder="Repite la contraseña" />
+              <button class="toggle-pass" (click)="showPassCC = !showPassCC">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Rol de Usuario</label>
+            <select [(ngModel)]="createData.role">
+              <option value="user">Cliente (User)</option>
+              <option value="admin">Administrador (Admin)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" (click)="openConfirm('create')">Crear Usuario</button>
+      </div>
+    }
+
+    <!-- Tabs Edit / Delete (Search based) -->
+    @if (activeTab === 'edit' || activeTab === 'delete') {
+      <div class="search-box">
+        <label>Buscar Usuario (Nombre, Cédula o Correo)</label>
+        <div class="search-input-wrapper">
+          <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Escribe y presiona Enter o el botón..." />
+          <button class="btn-search-icon" (click)="onSearch()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+          
+          @if (foundUsers.length > 0) {
+            <ul class="search-results">
+              @for (user of foundUsers; track user._id) {
+                <li (click)="selectUser(user)">
+                  <img [src]="user.avatar || 'assets/default-avatar.png'" alt="avatar" />
+                  <div>
+                    <p class="res-name">{{ user.nombres }} {{ user.apellidos }}</p>
+                    <p class="res-info">CC: {{ user.cedula }} | {{ user.correo }}</p>
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      @if (selectedUser) {
+        <div class="selected-card bounce-in">
+          <div class="user-header">
+            <img [src]="selectedUser.avatar || 'assets/default-avatar.png'" alt="Avatar" class="profile-preview" />
+            <div class="user-id-tags">
+              <h4>{{ selectedUser.nombres }} {{ selectedUser.apellidos }}</h4>
+              <span class="tag-id">CC: {{ selectedUser.cedula }}</span>
+              <span class="tag-role" [class.admin]="selectedUser.role === 'admin'">{{ selectedUser.role }}</span>
+            </div>
+          </div>
+
+          @if (activeTab === 'edit') {
+            <div class="edit-form">
+              <div class="form-grid">
+                <div class="input-group disabled">
+                  <label>Nombres (No editable)</label>
+                  <input type="text" [value]="selectedUser.nombres" disabled />
+                </div>
+                <div class="input-group">
+                  <label>Correo Electrónico</label>
+                  <input type="email" [(ngModel)]="editData.correo" />
+                </div>
+                <div class="input-group">
+                  <label>Nueva Contraseña (Opcional)</label>
+                  <div class="password-wrapper">
+                    <input [type]="showPassE ? 'text' : 'password'" [(ngModel)]="editData.password" />
+                    <button class="toggle-pass" (click)="showPassE = !showPassE">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label>Confirmar Contraseña</label>
+                  <div class="password-wrapper">
+                    <input [type]="showPassEC ? 'text' : 'password'" [(ngModel)]="editData.confirmPassword" />
+                    <button class="toggle-pass" (click)="showPassEC = !showPassEC">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label>Cambiar Rol</label>
+                  <select [(ngModel)]="editData.role">
+                    <option value="user">Cliente (User)</option>
+                    <option value="admin">Administrador (Admin)</option>
+                  </select>
+                </div>
+                @if (selectedUser.avatar) {
+                  <div class="checkbox-group">
+                    <input type="checkbox" id="delAvatar" [(ngModel)]="editData.deleteAvatar" />
+                    <label for="delAvatar">Eliminar foto de perfil actual</label>
+                  </div>
+                }
+              </div>
+              <button class="btn-primary" (click)="openConfirm('update')">Actualizar Usuario</button>
+            </div>
+          }
+
+          @if (activeTab === 'delete') {
+            <div class="delete-action">
+              <p class="warning-text">Estás a punto de eliminar permanentemente a este usuario del sistema.</p>
+              <button class="btn-danger" (click)="openConfirm('delete')">Eliminar Usuario de la Base de Datos</button>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Confirmation Modal -->
+  @if (showConfirmModal) {
+    <div class="modal-overlay" (click)="closeConfirm()">
+      <div class="confirm-modal" (click)="$event.stopPropagation()">
+        <h3>Confirmar Acción</h3>
+        <p>
+          @if (modalType === 'create') { ¿Estás seguro de crear este nuevo usuario? }
+          @if (modalType === 'update') { ¿Deseas aplicar los cambios al usuario {{ selectedUser?.nombres }}? }
+          @if (modalType === 'delete') { ¡ATENCIÓN! Eliminarás permanentemente a {{ selectedUser?.nombres }}. Esta acción no se puede deshacer. }
+        </p>
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="closeConfirm()">Cancelar</button>
+          <button [class]="modalType === 'delete' ? 'btn-danger' : 'btn-primary'" (click)="handleAction()">
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

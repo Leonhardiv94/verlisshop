@@ -59,9 +59,7 @@ export class Sidebar {
 
   adminOptions = [
     { name: 'Historial de ventas', link: '/admin/historial-ventas' },
-    { name: 'Crear usuario', link: '/admin/crear-usuario' },
-    { name: 'Modificar usuario', link: '/admin/modificar-usuario' },
-    { name: 'Eliminar usuario', link: '/admin/eliminar-usuario' },
+    { name: 'Gestión de Usuarios', link: '/admin/gestion-usuarios' },
     { name: 'Crear producto', link: '/admin/crear-producto' },
     { name: 'Modificar producto', link: '/admin/modificar-producto' },
     { name: 'Eliminar producto', link: '/admin/eliminar-producto' }
