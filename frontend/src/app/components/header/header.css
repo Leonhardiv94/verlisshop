@@ -190,3 +190,90 @@
   background-color: #dc3545;
   color: white;
 }
+
+/* Modal Cerrar Sesión */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
+
+.confirm-modal {
+  background: #212529;
+  border: 1px solid #495057;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-icon {
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 15px;
+  background: rgba(253, 126, 20, 0.1);
+  border-radius: 50%;
+}
+
+.confirm-modal h3 {
+  color: white;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+}
+
+.confirm-modal p {
+  color: #ADB5BD;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.modal-actions button {
+  padding: 12px 25px !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+}
+
+.btn-cancel {
+  background: transparent !important;
+  color: #ADB5BD !important;
+  border: 1px solid #495057 !important;
+}
+
+.btn-cancel:hover {
+  background: #343A40 !important;
+  color: white !important;
+}
+
+.btn-confirm-logout {
+  background: #dc3545 !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+.btn-confirm-logout:hover {
+  background: #bb2d3b !important;
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }

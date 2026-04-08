@@ -13,6 +13,7 @@ export class Header implements OnInit, OnDestroy {
 
   isLoggedIn = false;
   currentUser: any = null;
+  showLogoutModal = false;
   private authSub: Subscription = new Subscription();
 
   constructor(private authService: Auth, private router: Router) {}
@@ -39,9 +40,17 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onLogout() {
+    this.showLogoutModal = true;
+  }
+
+  confirmLogout() {
+    this.showLogoutModal = false;
     this.authService.logout();
-    // Use replaceUrl to prevent the user from using the back arrow to a logged-in state easily
     this.router.navigate(['/'], { replaceUrl: true });
+  }
+
+  cancelLogout() {
+    this.showLogoutModal = false;
   }
 
   navigateToProfile() {
