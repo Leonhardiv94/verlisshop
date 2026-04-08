@@ -131,9 +131,13 @@
       </div>
     </div>
 
-    <!-- Seccion de Valoraciones Abajo -->
     <div class="reviews-section">
       <h2 class="r-title">Opiniones y Valoraciones</h2>
+
+      <div class="transparency-alert">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Para asegurar la transparencia, solo clientes con <strong>pedido entregado</strong> pueden calificar este producto.</span>
+      </div>
       
       <div class="reviews-container">
         @if (!product.reviews || product.reviews.length === 0) {

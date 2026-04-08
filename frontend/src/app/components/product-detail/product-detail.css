@@ -197,3 +197,11 @@
 .avg-rating-box .stars span.filled { color: #FFDF00; }
 .avg-number { font-size: 1.5rem; font-weight: bold; color: #fff; }
 .total-reviews { color: #ADB5BD; font-size: 0.9rem; }
+
+.transparency-alert {
+  background: rgba(173, 181, 189, 0.05); border: 1px solid #343A40;
+  padding: 12px 20px; border-radius: 10px; display: flex; align-items: center; gap: 15px;
+  margin-bottom: 30px; color: #ADB5BD; font-size: 0.9rem;
+}
+.transparency-alert svg { color: #FD7E14; flex-shrink: 0; }
+.transparency-alert strong { color: #28a745; }
