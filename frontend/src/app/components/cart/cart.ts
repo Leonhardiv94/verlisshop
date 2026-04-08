@@ -58,9 +58,11 @@ export class Cart implements OnInit, OnDestroy {
 
   goToCheckout() {
     this.close();
-    // If cart has items, we might want to pass all of them to checkout.
-    // Our current checkout handles single product based on URL params.
-    // We should probably update checkout to handle the whole cart.
     this.router.navigate(['/checkout'], { queryParams: { fromCart: true } });
+  }
+
+  keepShopping() {
+    this.close();
+    this.router.navigate(['/']);
   }
 }

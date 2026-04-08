@@ -269,28 +269,46 @@
   color: #FD7E14;
 }
 
-.tax-info {
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin: 15px 0;
+.footer-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-continue-shopping {
+  flex: 1;
+  background: transparent;
+  color: #FD7E14;
+  border: 1px solid #FD7E14;
+  padding: 14px 10px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.btn-continue-shopping:hover {
+  background: rgba(253, 126, 20, 0.1);
 }
 
 .btn-checkout {
-  width: 100%;
+  flex: 1.5;
   background: #FD7E14;
   color: white;
   border: none;
-  padding: 16px;
+  padding: 14px 10px;
   border-radius: 10px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   transition: 0.3s;
-  box-shadow: 0 8px 20px rgba(253, 126, 20, 0.3);
+  box-shadow: 0 4px 15px rgba(253, 126, 20, 0.2);
 }
 
 .btn-checkout:hover {
