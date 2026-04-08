@@ -6,25 +6,25 @@ const orderSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
-    required: true
-  },
-  productSnapshot: {
-    nombre: String,
-    fotoPrincipal: String,
-    precio: Number,
-    codigo: Number
-  },
-  tallaEscogida: {
-    type: String
-  },
-  cantidad: {
-    type: Number,
-    required: true,
-    default: 1
-  },
+  items: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+      },
+      nombre: String,
+      fotoPrincipal: String,
+      precio: Number,
+      codigo: Number,
+      tallaEscogida: String,
+      cantidad: {
+        type: Number,
+        required: true,
+        default: 1
+      }
+    }
+  ],
   direccionEnvio: {
     pais: String,
     ciudad: String,

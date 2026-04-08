@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService, Product } from '../../services/product.service';
 import { Auth } from '../../services/auth';
 import { ModalService } from '../../services/modal.service';
+import { CartService } from '../../services/cart.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -47,6 +48,7 @@ export class ProductDetail implements OnInit, OnDestroy {
     private productService: ProductService,
     private authService: Auth,
     private modalService: ModalService,
+    private cartService: CartService,
     private location: Location
   ) {}
 
@@ -114,11 +116,23 @@ export class ProductDetail implements OnInit, OnDestroy {
 
   // Pendiente logica real de carrito
   onAddToCart() {
-    if (this.product?.tallas && this.product.tallas.length > 0 && !this.selectedTalla) {
-      alert('Por favor selecciona una talla antes de añadir al carrito.');
+    if (!this.product) return;
+    if (this.product.tallas && this.product.tallas.length > 0 && !this.selectedTalla) {
+      this.showNotification('Por favor selecciona una talla.', 'error');
       return;
     }
-    console.log('Agregando al carrito...', this.product?.nombre, 'Talla:', this.selectedTalla);
+    
+    this.cartService.addItem({
+      productId: this.product._id || '',
+      name: this.product.nombre,
+      price: this.product.precio,
+      image: this.product.fotoPrincipal,
+      quantity: this.cantidad,
+      size: this.selectedTalla
+    });
+
+    this.showNotification('¡Producto añadido a la bolsa!', 'success');
+    this.modalService.open('cart');
   }
 
   onBuyNow() {

@@ -2,6 +2,8 @@ import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/cor
 import { Auth } from '../../services/auth';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ModalService } from '../../services/modal.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -14,9 +16,16 @@ export class Header implements OnInit, OnDestroy {
   isLoggedIn = false;
   currentUser: any = null;
   showLogoutModal = false;
+  cartItemCount = 0;
   private authSub: Subscription = new Subscription();
+  private cartSub: Subscription = new Subscription();
 
-  constructor(private authService: Auth, private router: Router) {}
+  constructor(
+    private authService: Auth, 
+    private router: Router,
+    private modalService: ModalService,
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
     this.authSub.add(
@@ -25,18 +34,27 @@ export class Header implements OnInit, OnDestroy {
     this.authSub.add(
       this.authService.currentUser$.subscribe(user => this.currentUser = user)
     );
+
+    this.cartSub = this.cartService.cart$.subscribe(() => {
+      this.cartItemCount = this.cartService.getTotalItems();
+    });
   }
 
   ngOnDestroy() {
     this.authSub.unsubscribe();
+    this.cartSub.unsubscribe();
   }
 
   onLogin() {
-    this.openModalEvent.emit('login');
+    this.modalService.open('login');
   }
 
   onRegister() {
-    this.openModalEvent.emit('register');
+    this.modalService.open('register');
+  }
+
+  openCart() {
+    this.modalService.open('cart');
   }
 
   onLogout() {

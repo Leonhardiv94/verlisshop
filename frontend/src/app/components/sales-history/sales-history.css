@@ -11,18 +11,26 @@
 .orders-list { display: flex; flex-direction: column; gap: 20px; }
 
 .order-card { 
-  display: flex; gap: 20px; background: #2b3035; border: 1px solid #495057; 
-  border-radius: 12px; padding: 25px; align-items: stretch; transition: 0.2s; box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-  position: relative; /* Base for absolute history */
+  display: flex; flex-direction: column; gap: 15px; background: #2b3035; border: 1px solid #495057; 
+  border-radius: 12px; padding: 25px; transition: 0.2s; box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
-.order-card:hover { border-color: #6C757D; }
+.order-main-info { display: flex; gap: 20px; flex-wrap: wrap; }
+.items-summary { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.customer-info-row { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; color: #ffb067; font-size: 0.95rem; }
+.mini-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
 
-.order-img { width: 120px; height: 120px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: white;}
-.order-img img { width: 100%; height: 100%; object-fit: cover; }
+.order-item-row { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 8px; }
+.mini-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; background: white; }
+.item-text { flex: 1; }
+.item-name { margin: 0; font-size: 1rem; color: #fff; }
+.item-meta { font-size: 0.85rem; color: #ADB5BD; }
 
-.order-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 15px; }
-.od-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-.od-title { margin: 0; font-size: 1.5rem; color: #FD7E14; font-weight: bold; }
+.order-financials { min-width: 250px; display: flex; flex-direction: column; gap: 8px; padding-left: 20px; border-left: 1px dashed #495057; }
+.total-label { margin: 0; color: #fff; }
+.highlight-price { color: #28a745; font-weight: bold; font-size: 1.1rem;}
+
+.order-footer-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #343A40; padding-top: 10px; }
+
 .od-code { background: #212529; color: #ADB5BD; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; border: 1px solid #495057;}
 .od-code strong { color: #FD7E14; }
 

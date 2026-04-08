@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductService, Product } from '../../services/product.service';
 import { Auth } from '../../services/auth';
 import { OrderService } from '../../services/order.service';
+import { CartService, CartItem } from '../../services/cart.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,6 +19,11 @@ export class Checkout implements OnInit, OnDestroy {
   product: Product | null = null;
   talla: string | null = null;
   cantidad: number = 1;
+
+  // Multi-item cart support
+  cartItems: any[] = [];
+  isFromCart = false;
+
   currentUser: any = null;
   isLoading = true;
 
@@ -50,6 +56,7 @@ export class Checkout implements OnInit, OnDestroy {
     private productService: ProductService,
     private authService: Auth,
     private orderService: OrderService,
+    private cartService: CartService,
     private location: Location
   ) {}
 
@@ -73,15 +80,25 @@ export class Checkout implements OnInit, OnDestroy {
     });
 
     this.routeSub = this.route.queryParams.subscribe(params => {
-      const productId = params['producto'];
-      this.talla = params['talla'] || null;
-      this.cantidad = params['cantidad'] ? parseInt(params['cantidad'], 10) : 1;
-
-      if (productId) {
-        this.loadProduct(productId);
+      this.isFromCart = params['fromCart'] === 'true';
+      
+      if (this.isFromCart) {
+        this.cartItems = this.cartService.getCartSnapshot();
+        if (this.cartItems.length === 0) {
+          this.router.navigate(['/']);
+          return;
+        }
+        this.isLoading = false;
       } else {
-         // Si no mandan producto, regresamos
-         this.location.back();
+        const productId = params['producto'];
+        this.talla = params['talla'] || null;
+        this.cantidad = params['cantidad'] ? parseInt(params['cantidad'], 10) : 1;
+
+        if (productId) {
+          this.loadProduct(productId);
+        } else {
+          this.location.back();
+        }
       }
     });
   }
@@ -107,6 +124,9 @@ export class Checkout implements OnInit, OnDestroy {
   }
 
   get totalValue(): number {
+    if (this.isFromCart) {
+      return this.cartService.getTotalAmount() + this.shippingCost;
+    }
     return ((this.product?.precio || 0) * this.cantidad) + this.shippingCost;
   }
 
@@ -143,7 +163,8 @@ export class Checkout implements OnInit, OnDestroy {
   }
 
   onProceedToPay() {
-    if (!this.product) return;
+    if (!this.isFromCart && !this.product) return;
+    if (this.isFromCart && this.cartItems.length === 0) return;
 
     let finalAddress: any = null;
 
@@ -180,10 +201,24 @@ export class Checkout implements OnInit, OnDestroy {
   }
 
   processOrderMock(addressPayload: any) {
+    let orderItems = [];
+
+    if (this.isFromCart) {
+      orderItems = this.cartItems.map(item => ({
+        productId: item.productId,
+        tallaEscogida: item.size,
+        cantidad: item.quantity
+      }));
+    } else {
+      orderItems = [{
+        productId: this.product?._id,
+        tallaEscogida: this.talla,
+        cantidad: this.cantidad
+      }];
+    }
+
     const orderData = {
-      productId: this.product?._id,
-      tallaEscogida: this.talla,
-      cantidad: this.cantidad,
+      items: orderItems,
       direccionEnvio: addressPayload,
       costoEnvio: this.shippingCost,
       totalPagar: this.totalValue
@@ -195,6 +230,9 @@ export class Checkout implements OnInit, OnDestroy {
       next: (res) => {
         this.createdOrderCode = res.order.codigoOrden;
         this.orderSuccess = true;
+        if (this.isFromCart) {
+          this.cartService.clearCart();
+        }
       },
       error: (err) => {
         console.error('Error procesando pago:', err);

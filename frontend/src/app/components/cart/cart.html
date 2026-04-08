@@ -1,0 +1,73 @@
+<div class="cart-overlay" [class.open]="isOpen" (click)="close()">
+  <div class="cart-drawer" (click)="$event.stopPropagation()">
+    <div class="cart-header">
+      <h2>Mi Bolsa de Compras</h2>
+      <button class="close-btn" (click)="close()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="cart-content">
+      @if (items.length === 0) {
+        <div class="empty-cart">
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </div>
+          <h3>Tu bolsa está vacía</h3>
+          <p>¿Qué tal si empiezas a añadir algunos artículos increíbles?</p>
+          <button class="btn-continue" (click)="close()">Continuar comprando</button>
+        </div>
+      } @else {
+        <div class="items-list">
+          @for (item of items; track item.productId + item.size) {
+            <div class="cart-item slide-in">
+              <div class="item-img">
+                <img [src]="item.image" [alt]="item.name">
+              </div>
+              <div class="item-info">
+                <div class="item-header">
+                  <h4 class="item-name">{{ item.name }}</h4>
+                  <button class="remove-btn" (click)="removeItem(item)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  </button>
+                </div>
+                <div class="item-details">
+                  @if (item.size) {
+                    <span class="detail-tag">Talla: <strong>{{ item.size }}</strong></span>
+                  }
+                  <span class="item-price">${{ item.price | number:'1.0-0' }}</span>
+                </div>
+                <div class="item-actions">
+                  <div class="qty-control">
+                    <button (click)="updateQty(item, -1)" [disabled]="item.quantity <= 1">-</button>
+                    <span>{{ item.quantity }}</span>
+                    <button (click)="updateQty(item, 1)">+</button>
+                  </div>
+                  <span class="item-subtotal">${{ (item.price * item.quantity) | number:'1.0-0' }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    @if (items.length > 0) {
+      <div class="cart-footer">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>${{ totalAmount | number:'1.0-0' }}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span class="total-price">${{ totalAmount | number:'1.0-0' }}</span>
+        </div>
+        <p class="tax-info">Impuestos y envío calculados al finalizar la compra.</p>
+        <button class="btn-checkout" (click)="goToCheckout()">
+          Finalizar Pedido
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -20,7 +20,7 @@
     </div>
   } @else if (isLoading) {
     <div class="loader-box">Ensamblando tu punto de pago...</div>
-  } @else if (product) {
+  } @else {
     <div class="chk-wrapper">
       
       <!-- Panel Izquierdo: Formulario Envío -->
@@ -94,23 +94,43 @@
       <div class="chk-summary bounce-right">
         <h3 class="sum-title">Resumen de tu Orden</h3>
         
-        <div class="product-line">
-          <div class="p-img-box">
-            <img [src]="product.fotoPrincipal" [alt]="product.nombre" />
-          </div>
-          <div class="p-info">
-            <h4 class="p-name">{{ product.nombre }}</h4>
-            <span class="p-code">Cód: #{{ product.codigo || 'N/A' }}</span>
-            @if (talla) {
-              <span class="p-talla">Talla Seleccionada: {{ talla }}</span>
+        <div class="checkout-items-scroll">
+          @if (isFromCart) {
+            @for (item of cartItems; track item.productId + item.size) {
+              <div class="product-line">
+                <div class="p-img-box">
+                  <img [src]="item.image" [alt]="item.name" />
+                </div>
+                <div class="p-info">
+                  <h4 class="p-name">{{ item.name }}</h4>
+                  <span class="p-specs">{{ item.quantity }} x ${{ item.price | number:'1.0-0' }}</span>
+                  @if (item.size) {
+                    <span class="p-talla">Talla: {{ item.size }}</span>
+                  }
+                </div>
+              </div>
             }
-          </div>
+          } @else if (product) {
+            <div class="product-line">
+              <div class="p-img-box">
+                <img [src]="product.fotoPrincipal" [alt]="product.nombre" />
+              </div>
+              <div class="p-info">
+                <h4 class="p-name">{{ product.nombre }}</h4>
+                <span class="p-code">Cód: #{{ product.codigo || 'N/A' }}</span>
+                @if (talla) {
+                  <span class="p-talla">Talla: {{ talla }}</span>
+                }
+                <span class="p-specs">Cantidad: {{ cantidad }}</span>
+              </div>
+            </div>
+          }
         </div>
 
         <div class="sum-breakdown">
           <div class="sum-row">
-            <span>Subtotal (Producto)</span>
-            <span>${{ product.precio | number:'1.0-0' }}</span>
+            <span>Subtotal</span>
+            <span>${{ (isFromCart ? totalValue - shippingCost : (product?.precio || 0) * cantidad) | number:'1.0-0' }}</span>
           </div>
           <div class="sum-row">
             <span>Costo de Envío</span>

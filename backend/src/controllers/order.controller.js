@@ -4,28 +4,36 @@ const User = require('../models/user.model');
 
 const createOrder = async (req, res) => {
   try {
-    const { productId, tallaEscogida, cantidad, direccionEnvio, costoEnvio, totalPagar } = req.body;
+    const { items, direccionEnvio, costoEnvio, totalPagar } = req.body;
 
-    // Validar producto
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({ message: 'Producto no encontrado' });
+    if (!items || items.length === 0) {
+      return res.status(400).json({ message: 'La orden debe tener al menos un producto' });
     }
 
-    // Generar código de orden nativo (P ej: VSH-8A2F9)
+    // Prepare processed items (snapshots)
+    const processedItems = [];
+    for (const item of items) {
+      const product = await Product.findById(item.productId);
+      if (!product) {
+        return res.status(404).json({ message: `Producto ${item.productId} no encontrado` });
+      }
+      processedItems.push({
+        product: product._id,
+        nombre: product.nombre,
+        fotoPrincipal: product.fotoPrincipal,
+        precio: product.precio,
+        codigo: product.codigo,
+        tallaEscogida: item.tallaEscogida || item.size,
+        cantidad: item.cantidad
+      });
+    }
+
+    // Generar código de orden nativo
     const shortCode = 'VSH-' + Math.random().toString(36).substring(2, 7).toUpperCase();
 
     const order = new Order({
       user: req.userId,
-      product: productId,
-      productSnapshot: {
-        nombre: product.nombre,
-        fotoPrincipal: product.fotoPrincipal,
-        precio: product.precio,
-        codigo: product.codigo
-      },
-      tallaEscogida,
-      cantidad,
+      items: processedItems,
       direccionEnvio,
       costoEnvio,
       totalPagar,
@@ -46,9 +54,26 @@ const createOrder = async (req, res) => {
 
 const getMyOrders = async (req, res) => {
   try {
-    // Sort by newest first
     const orders = await Order.find({ user: req.userId }).sort({ createdAt: -1 });
-    res.json(orders);
+    
+    // Normalize legacy orders for the new UI
+    const normalized = orders.map(order => {
+      const obj = order.toObject();
+      if (!obj.items || obj.items.length === 0) {
+        obj.items = [{
+          product: obj.product,
+          nombre: obj.productSnapshot?.nombre,
+          fotoPrincipal: obj.productSnapshot?.fotoPrincipal,
+          precio: obj.productSnapshot?.precio,
+          codigo: obj.productSnapshot?.codigo,
+          tallaEscogida: obj.tallaEscogida,
+          cantidad: obj.cantidad
+        }];
+      }
+      return obj;
+    });
+
+    res.json(normalized);
   } catch (error) {
     res.status(500).json({ message: 'Error obteniendo historial', error: error.message });
   }
@@ -61,9 +86,26 @@ const getAllOrders = async (req, res) => {
       return res.status(403).json({ error: 'Acceso denegado. Permisos requeridos.' });
     }
 
-    // Poblamos el user para el panel admin
     const orders = await Order.find().populate('user', 'nombres apellidos correo avatar').sort({ createdAt: -1 });
-    res.json(orders);
+    
+    // Normalize legacy orders for the new UI
+    const normalized = orders.map(order => {
+      const obj = order.toObject();
+      if (!obj.items || obj.items.length === 0) {
+        obj.items = [{
+          product: obj.product,
+          nombre: obj.productSnapshot?.nombre,
+          fotoPrincipal: obj.productSnapshot?.fotoPrincipal,
+          precio: obj.productSnapshot?.precio,
+          codigo: obj.productSnapshot?.codigo,
+          tallaEscogida: obj.tallaEscogida,
+          cantidad: obj.cantidad
+        }];
+      }
+      return obj;
+    });
+
+    res.json(normalized);
   } catch (error) {
     res.status(500).json({ message: 'Error obteniendo historial general', error: error.message });
   }
@@ -88,9 +130,23 @@ const updateOrderStatus = async (req, res) => {
     order.historialEstados.push({ estado: status, fecha: new Date() });
     await order.save();
     
-    // Poblamos para devolver al front
     const updatedOrder = await Order.findById(id).populate('user', 'nombres apellidos correo avatar');
-    res.json(updatedOrder);
+    
+    // Normalize for response
+    const obj = updatedOrder.toObject();
+    if (!obj.items || obj.items.length === 0) {
+      obj.items = [{
+        product: obj.product,
+        nombre: obj.productSnapshot?.nombre,
+        fotoPrincipal: obj.productSnapshot?.fotoPrincipal,
+        precio: obj.productSnapshot?.precio,
+        codigo: obj.productSnapshot?.codigo,
+        tallaEscogida: obj.tallaEscogida,
+        cantidad: obj.cantidad
+      }];
+    }
+
+    res.json(obj);
   } catch (error) {
     res.status(500).json({ message: 'Error actualizando estado', error: error.message });
   }

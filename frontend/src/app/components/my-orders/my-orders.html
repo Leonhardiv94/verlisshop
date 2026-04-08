@@ -24,40 +24,45 @@
     <div class="orders-list">
       @for (order of orders; track order._id) {
         <div class="order-card bounce-in">
-          <div class="order-img">
-            <img [src]="order.productSnapshot.fotoPrincipal || 'assets/placeholder.jpg'" [alt]="order.productSnapshot.nombre" />
-          </div>
-          
-          <div class="order-details">
-            <div class="od-header">
-              <h3 class="od-title">{{ order.productSnapshot.nombre }}</h3>
-              <span class="od-code">Cód de Orden: <strong>{{ order.codigoOrden }}</strong></span>
+          <div class="order-main-info">
+            <div class="items-summary">
+              @for (item of order.items; track item.product + item.tallaEscogida) {
+                <div class="order-item-row">
+                  <img [src]="item.fotoPrincipal" [alt]="item.nombre" class="mini-img">
+                  <div class="item-text">
+                    <h4 class="item-name">{{ item.nombre }}</h4>
+                    <span class="item-meta">
+                      {{ item.cantidad }} unidad(es) @if(item.tallaEscogida){ | Talla: {{ item.tallaEscogida }}}
+                    </span>
+                  </div>
+                  @if (order.estado === 'Pedido entregado') {
+                    <button class="btn-rate-mini" (click)="openRatingModal(order, item)" title="Calificar">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </button>
+                  }
+                </div>
+              }
             </div>
             
-            <div class="od-specs">
-              <p><strong>Cód Producto:</strong> #{{ order.productSnapshot.codigo }}</p>
-              @if (order.tallaEscogida) {
-                <p><strong>Talla:</strong> {{ order.tallaEscogida }}</p>
-              }
-              <p><strong>Cantidad:</strong> {{ order.cantidad }} unidades</p>
-              <p><strong>Total Pagado:</strong> <span class="highlight-price">${{ order.totalPagar | number:'1.0-0' }}</span></p>
+            <div class="order-financials">
+              <span class="od-code">Orden: <strong>{{ order.codigoOrden }}</strong></span>
+              <p class="total-label">Total Pagado: <span class="highlight-price">${{ order.totalPagar | number:'1.0-0' }}</span></p>
+              <div class="status-badge" 
+                [class.badge-pending]="order.estado === 'Pedido recibido'"
+                [class.badge-shipped]="order.estado === 'Pedido despachado'"
+                [class.badge-delivered]="order.estado === 'Pedido entregado'"
+                [class.badge-returned]="order.estado === 'Pedido devuelto'"
+                [class.badge-cancelled]="order.estado === 'Pedido cancelado'">
+                {{ order.estado }}
+              </div>
             </div>
           </div>
 
-          <div class="order-status">
-            <div class="status-badge" 
-              [class.badge-pending]="order.estado === 'Pedido recibido'"
-              [class.badge-shipped]="order.estado === 'Pedido despachado'"
-              [class.badge-delivered]="order.estado === 'Pedido entregado'"
-              [class.badge-returned]="order.estado === 'Pedido devuelto'"
-              [class.badge-cancelled]="order.estado === 'Pedido cancelado'">
-              {{ order.estado }}
-            </div>
-            
+          <div class="order-footer-actions">
             <div class="status-history-box" [class.expanded]="order._showHistory">
               <div class="history-toggle" (click)="toggleHistory(order)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <span class="history-label">Trazabilidad</span>
+                <span class="history-label">Ver Trazabilidad</span>
                 <svg class="chevron" [class.open]="order._showHistory" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </div>
               
@@ -73,10 +78,6 @@
                 </ul>
               }
             </div>
-
-            @if (order.estado === 'Pedido entregado') {
-              <button class="btn-rate" (click)="openRatingModal(order)">Calificar Producto</button>
-            }
           </div>
         </div>
       }
@@ -87,8 +88,8 @@
   @if (showRatingModal) {
     <div class="modal-overlay" (click)="closeRatingModal()">
       <div class="rating-modal" (click)="$event.stopPropagation()">
-        <h3>Califica tu compra</h3>
-        <p>¿Qué te pareció el <strong>{{ selectedOrderForRating?.productSnapshot?.nombre }}</strong>?</p>
+        <h3>Califica tu producto</h3>
+        <p>¿Qué te pareció el <strong>{{ selectedProductForRating?.nombre }}</strong>?</p>
         
         <div class="star-rating">
           @for (n of [1,2,3,4,5]; track n) {

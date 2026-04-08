@@ -3,18 +3,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Auth } from './auth';
 
-export interface Order {
-  _id: string;
-  user: any; // ID or populated Object
-  productSnapshot: {
-    nombre: string;
-    fotoPrincipal: string;
-    precio: number;
-    codigo: number;
-  };
-  product: string; // Original Product ID
+export interface OrderItem {
+  product: string;
+  nombre: string;
+  fotoPrincipal: string;
+  precio: number;
+  codigo: number;
   tallaEscogida: string;
   cantidad: number;
+}
+
+export interface Order {
+  _id: string;
+  user: any; 
+  items: OrderItem[];
   direccionEnvio: {
     pais: string;
     ciudad: string;

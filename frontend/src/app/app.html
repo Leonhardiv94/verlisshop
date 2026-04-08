@@ -1,5 +1,5 @@
 <div class="app-container">
-  <app-header (openModalEvent)="openModal($event)"></app-header>
+  <app-header></app-header>
 
   <div class="app-body">
     <app-sidebar></app-sidebar>
@@ -10,8 +10,9 @@
   </div>
 
   <app-footer></app-footer>
+  <app-cart></app-cart>
 
-  @if (showModal) {
+  @if (showAuthModal) {
     <app-auth-modal
       [modalType]="modalType"
       (closeModalEvent)="closeModal()"

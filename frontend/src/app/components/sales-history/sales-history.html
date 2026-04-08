@@ -12,45 +12,56 @@
     <div class="orders-list">
       @for (order of orders; track order._id) {
         <div class="order-card bounce-in">
-          <div class="order-img">
-            <img [src]="order.productSnapshot.fotoPrincipal || 'assets/placeholder.jpg'" [alt]="order.productSnapshot.nombre" />
-          </div>
-          
-          <div class="order-details">
-            <div class="od-header">
-              <h3 class="od-title">{{ order.productSnapshot.nombre }}</h3>
-              <span class="od-code">Cód Orden: <strong>{{ order.codigoOrden }}</strong></span>
-            </div>
-            
-            <div class="customer-info">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <span><strong>Comprador:</strong> {{ order.user?.nombres }} {{ order.user?.apellidos }} (<a href="mailto:{{order.user?.correo}}">{{ order.user?.correo }}</a>)</span>
-            </div>
-
-            <div class="od-specs">
-              <p><strong>Cód Producto:</strong> #{{ order.productSnapshot.codigo }}</p>
-              @if (order.tallaEscogida) {
-                <p><strong>Talla:</strong> {{ order.tallaEscogida }}</p>
+          <div class="order-main-info">
+            <div class="items-summary">
+              <div class="customer-info-row">
+                <img [src]="order.user?.avatar || 'assets/default-avatar.png'" class="mini-avatar">
+                <span><strong>Cliente:</strong> {{ order.user?.nombres }} {{ order.user?.apellidos }} ({{ order.user?.correo }})</span>
+              </div>
+              @for (item of order.items; track item.product + item.tallaEscogida) {
+                <div class="order-item-row">
+                  <img [src]="item.fotoPrincipal" [alt]="item.nombre" class="mini-img">
+                  <div class="item-text">
+                    <h4 class="item-name">{{ item.nombre }}</h4>
+                    <span class="item-meta">
+                      {{ item.cantidad }} unidad(es) @if(item.tallaEscogida){ | Talla: {{ item.tallaEscogida }}} | #{{ item.codigo }}
+                    </span>
+                  </div>
+                </div>
               }
-              <p><strong>Cantidad:</strong> {{ order.cantidad }} unidades</p>
-              <p><strong>Total Cobrado:</strong> <span class="highlight-price">${{ order.totalPagar | number:'1.0-0' }}</span></p>
+            </div>
+            
+            <div class="order-financials">
+              <span class="od-code">Orden: <strong>{{ order.codigoOrden }}</strong></span>
+              <p class="total-label">Total Cobrado: <span class="highlight-price">${{ order.totalPagar | number:'1.0-0' }}</span></p>
+              
+              <div class="status-badge" 
+                [class.badge-pending]="order.estado === 'Pedido recibido'"
+                [class.badge-shipped]="order.estado === 'Pedido despachado'"
+                [class.badge-delivered]="order.estado === 'Pedido entregado'"
+                [class.badge-returned]="order.estado === 'Pedido devuelto'"
+                [class.badge-cancelled]="order.estado === 'Pedido cancelado'">
+                {{ order.estado }}
+              </div>
+
+              <div class="manage-status-box">
+                <h4 class="manage-title">Actualizar Estado:</h4>
+                <select class="status-select" #statusSelect (change)="onStatusChange(order._id, statusSelect.value)">
+                  <option [selected]="order.estado === 'Pedido recibido'" value="Pedido recibido">Pedido recibido</option>
+                  <option [selected]="order.estado === 'Pedido despachado'" value="Pedido despachado">Pedido despachado</option>
+                  <option [selected]="order.estado === 'Pedido entregado'" value="Pedido entregado">Pedido entregado</option>
+                  <option [selected]="order.estado === 'Pedido devuelto'" value="Pedido devuelto">Pedido devuelto</option>
+                  <option [selected]="order.estado === 'Pedido cancelado'" value="Pedido cancelado">Pedido cancelado</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <div class="order-status">
-            <div class="status-badge" 
-              [class.badge-pending]="order.estado === 'Pedido recibido'"
-              [class.badge-shipped]="order.estado === 'Pedido despachado'"
-              [class.badge-delivered]="order.estado === 'Pedido entregado'"
-              [class.badge-returned]="order.estado === 'Pedido devuelto'"
-              [class.badge-cancelled]="order.estado === 'Pedido cancelado'">
-              {{ order.estado }}
-            </div>
-            
+          <div class="order-footer-actions">
             <div class="status-history-box" [class.expanded]="order._showHistory">
               <div class="history-toggle" (click)="toggleHistory(order)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <span class="history-label">Ver Trazabilidad</span>
+                <span class="history-label">Ver Historial de Estados</span>
                 <svg class="chevron" [class.open]="order._showHistory" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </div>
               
@@ -65,17 +76,6 @@
                   }
                 </ul>
               }
-            </div>
-
-            <div class="manage-status-box">
-              <h4 class="manage-title">Gestionar Estado:</h4>
-              <select class="status-select" #statusSelect (change)="onStatusChange(order._id, statusSelect.value)">
-                <option [selected]="order.estado === 'Pedido recibido'" value="Pedido recibido">Pedido recibido</option>
-                <option [selected]="order.estado === 'Pedido despachado'" value="Pedido despachado">Pedido despachado</option>
-                <option [selected]="order.estado === 'Pedido entregado'" value="Pedido entregado">Pedido entregado</option>
-                <option [selected]="order.estado === 'Pedido devuelto'" value="Pedido devuelto">Pedido devuelto</option>
-                <option [selected]="order.estado === 'Pedido cancelado'" value="Pedido cancelado">Pedido cancelado</option>
-              </select>
             </div>
           </div>
         </div>

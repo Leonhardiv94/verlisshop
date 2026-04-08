@@ -24,6 +24,7 @@ export class MyOrders implements OnInit {
   selectedOrderForRating: Order | null = null;
   ratingStars = 0;
   ratingComment = '';
+  selectedProductForRating: any = null;
 
   constructor(
     private orderService: OrderService, 
@@ -52,8 +53,9 @@ export class MyOrders implements OnInit {
     order._showHistory = !order._showHistory;
   }
 
-  openRatingModal(order: Order) {
+  openRatingModal(order: Order, item?: any) {
     this.selectedOrderForRating = order;
+    this.selectedProductForRating = item || order.items[0];
     this.ratingStars = 5;
     this.ratingComment = '';
     this.showRatingModal = true;
@@ -76,14 +78,14 @@ export class MyOrders implements OnInit {
   }
 
   saveRating() {
-    if (!this.selectedOrderForRating || !this.selectedOrderForRating.product) return;
+    if (!this.selectedProductForRating) return;
     
     const reviewData = {
       rating: this.ratingStars,
       comment: this.ratingComment
     };
 
-    const productId = this.selectedOrderForRating.product;
+    const productId = this.selectedProductForRating.product;
 
     this.productService.addReview(productId, reviewData).subscribe({
       next: (res) => {
