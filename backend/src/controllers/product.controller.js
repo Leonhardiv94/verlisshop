@@ -129,3 +129,56 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ error: 'Error al eliminar el producto' });
   }
 };
+
+exports.addReview = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    const { id } = req.params;
+    const user = await User.findById(req.userId);
+
+    const product = await Product.findById(id);
+    if (!product) return res.status(404).json({ error: 'Producto no encontrado' });
+
+    const review = {
+      user: user._id,
+      userName: `${user.nombres} ${user.apellidos}`,
+      userAvatar: user.avatar || '',
+      rating,
+      comment,
+      createdAt: new Date()
+    };
+
+    product.reviews.push(review);
+
+    // Recalcular promedio
+    const totalRating = product.reviews.reduce((acc, item) => acc + item.rating, 0);
+    product.averageRating = totalRating / product.reviews.length;
+
+    await product.save();
+    res.status(201).json({ message: 'Calificación añadida', product });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al añadir calificación' });
+  }
+};
+
+exports.replyReview = async (req, res) => {
+  try {
+    const { reply } = req.body;
+    const { productId, reviewId } = req.params;
+    const admin = await User.findById(req.userId);
+
+    if (admin.role !== 'admin') return res.status(403).json({ error: 'Solo admins pueden responder' });
+
+    const product = await Product.findById(productId);
+    const review = product.reviews.id(reviewId);
+    if (!review) return res.status(404).json({ error: 'Comentario no encontrado' });
+
+    review.reply = reply;
+    review.adminName = admin.nombres;
+
+    await product.save();
+    res.json({ message: 'Respuesta guardada', product });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al responder' });
+  }
+};

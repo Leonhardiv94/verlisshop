@@ -45,7 +45,18 @@ const productSchema = new mongoose.Schema({
   tallas: {
     type: [String], // "19", "21", "23", "36", etc.
     default: []
-  }
+  },
+  reviews: [{
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userName: String,
+    userAvatar: String,
+    rating: { type: Number, required: true, min: 1, max: 5 },
+    comment: { type: String, required: true },
+    reply: { type: String, default: '' },
+    adminName: { type: String, default: '' },
+    createdAt: { type: Date, default: Date.now }
+  }],
+  averageRating: { type: Number, default: 0 }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

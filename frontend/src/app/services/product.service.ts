@@ -17,6 +17,20 @@ export interface Product {
   fotosAdicionales: string[]; // Base64[]
   tallas: string[];
   
+  // Reviews
+  reviews?: Array<{
+    _id?: string;
+    user: string;
+    userName: string;
+    userAvatar: string;
+    rating: number;
+    comment: string;
+    reply?: string;
+    adminName?: string;
+    createdAt: Date;
+  }>;
+  averageRating?: number;
+
   // UI State para el carrusel
   _currentIndex?: number;
   _intervalId?: any;
@@ -72,5 +86,14 @@ export class ProductService {
       body: { password },
       headers: this.getHeaders()
     });
+  }
+
+  // Reviews
+  addReview(productId: string, review: { rating: number, comment: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${productId}/review`, review, { headers: this.getHeaders() });
+  }
+
+  replyReview(productId: string, reviewId: string, reply: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${productId}/reply/${reviewId}`, { reply }, { headers: this.getHeaders() });
   }
 }

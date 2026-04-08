@@ -25,6 +25,11 @@ export class ProductDetail implements OnInit, OnDestroy {
   selectedTalla = '';
   cantidad: number = 1;
   isLoggedIn = false;
+  currentUser: any = null;
+
+  // Admin Reply logic
+  replyingToId: string | null = null;
+  adminReplyText = '';
   
   private routeSub: Subscription = new Subscription();
   private authSub: Subscription = new Subscription();
@@ -41,6 +46,10 @@ export class ProductDetail implements OnInit, OnDestroy {
   ngOnInit() {
     this.authSub = this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
+    });
+
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
     });
 
     this.routeSub = this.route.paramMap.subscribe(params => {
@@ -120,5 +129,35 @@ export class ProductDetail implements OnInit, OnDestroy {
       queryParams.talla = this.selectedTalla;
     }
     this.router.navigate(['/checkout'], { queryParams });
+  }
+
+  // Star Rating Helper
+  getStarArray(rating: number) {
+    return Array(5).fill(0).map((_, i) => i < rating);
+  }
+
+  startReply(reviewId: string) {
+    this.replyingToId = reviewId;
+    this.adminReplyText = '';
+  }
+
+  cancelReply() {
+    this.replyingToId = null;
+  }
+
+  submitAdminReply(reviewId: string) {
+    if (!this.product || !this.adminReplyText.trim()) return;
+
+    this.productService.replyReview(this.product._id || '', reviewId, this.adminReplyText).subscribe({
+      next: (res) => {
+        this.product = res.product;
+        this.cancelReply();
+        alert('Respuesta enviada exitosamente.');
+      },
+      error: (err) => {
+        console.error('Error replying:', err);
+        alert('No se pudo enviar la respuesta.');
+      }
+    });
   }
 }

@@ -43,6 +43,18 @@
         </div>
         
         <h1 class="p-title">{{ product.nombre }}</h1>
+        
+        <!-- Average Rating Header -->
+        <div class="avg-rating-box">
+          <div class="stars">
+            @for (star of getStarArray(product.averageRating || 0); track $index) {
+              <span [class.filled]="star">★</span>
+            }
+          </div>
+          <span class="avg-number">{{ product.averageRating | number:'1.1-1' }}</span>
+          <span class="total-reviews">({{ (product.reviews?.length || 0) }} opiniones)</span>
+        </div>
+
         <div class="p-code">CÓDIGO DE PRODUCTO: #{{ product.codigo || 'N/A' }}</div>
         
         <div class="p-price">
@@ -123,20 +135,62 @@
     <div class="reviews-section">
       <h2 class="r-title">Opiniones y Valoraciones</h2>
       
-      <div class="reviews-mockup">
-        <div class="r-locked">
-          <svg viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-          <h4>Solo compradores verificados pueden opinar</h4>
-          <p>En VerlisShop cuidamos la transparencia. Para dejar una reseña en este espacio, el cliente debe haber finalizado la compra y recibido el pedido de este exacto producto.</p>
-        </div>
-
-        <!-- Mocks de comentarios para hacer sentido comercial visual -->
-        <div class="demo-comment">
-          <div class="c-head">
-            <span class="stars">★★★★★</span> <span class="c-name">Ana María L.</span> <span class="c-badge">✓ Compra Verificada</span>
+      <div class="reviews-container">
+        @if (!product.reviews || product.reviews.length === 0) {
+          <div class="empty-reviews">
+            <svg viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <p>Por ahora no hay comentarios sobre este producto.</p>
+            <small>Sé el primero en calificarlo tras tu compra.</small>
           </div>
-          <p>"Me llegaron en perfectas condiciones y el material se nota que es de altísima calidad. Valió totalmente la pena, ¡recomendados!"</p>
-        </div>
+        } @else {
+          <div class="reviews-list">
+            @for (review of product.reviews; track review._id) {
+              <div class="review-card slide-down">
+                <div class="rev-header">
+                  <div class="u-info">
+                    <img [src]="review.userAvatar || 'assets/default-avatar.png'" alt="User" class="rev-avatar">
+                    <div class="u-text">
+                      <span class="u-name">{{ review.userName }}</span>
+                      <span class="rev-stars">
+                        @for (filled of getStarArray(review.rating); track $index) {
+                          <span [class.filled]="filled">★</span>
+                        }
+                      </span>
+                    </div>
+                  </div>
+                  <span class="rev-date">{{ review.createdAt | date:'dd/MM/yyyy' }}</span>
+                </div>
+                
+                <p class="rev-comment">{{ review.comment }}</p>
+
+                <!-- Admin Response Display -->
+                @if (review.reply) {
+                  <div class="admin-reply-box">
+                    <div class="admin-tag">Respuesta de <strong>Admin.{{ review.adminName }}</strong>:</div>
+                    <p class="reply-text">{{ review.reply }}</p>
+                  </div>
+                }
+
+                <!-- Admin Action: Reply -->
+                @if (currentUser?.role === 'admin' && !review.reply) {
+                  <div class="admin-actions">
+                    @if (replyingToId !== review._id) {
+                      <button class="btn-reply-trigger" (click)="startReply(review._id!)">Responder a este comentario</button>
+                    } @else {
+                      <div class="reply-editor">
+                        <textarea [(ngModel)]="adminReplyText" placeholder="Escribe tu respuesta como administrador..."></textarea>
+                        <div class="editor-buttons">
+                          <button class="btn-cancel-reply" (click)="cancelReply()">Cancelar</button>
+                          <button class="btn-submit-reply" (click)="submitAdminReply(review._id!)" [disabled]="!adminReplyText.trim()">Enviar Respuesta</button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
       </div>
     </div>
 

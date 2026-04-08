@@ -18,4 +18,8 @@ router.put('/:id', authMiddleware, productController.updateProduct);
 // Eliminar producto - Protegido
 router.delete('/:id', authMiddleware, productController.deleteProduct);
 
+// Calificaciones
+router.post('/:id/review', authMiddleware, productController.addReview);
+router.post('/:productId/reply/:reviewId', authMiddleware, productController.replyReview);
+
 module.exports = router;

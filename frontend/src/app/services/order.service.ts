@@ -12,6 +12,7 @@ export interface Order {
     precio: number;
     codigo: number;
   };
+  product: string; // Original Product ID
   tallaEscogida: string;
   cantidad: number;
   direccionEnvio: {
