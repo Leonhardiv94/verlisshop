@@ -58,13 +58,14 @@
 .inventory-header-row {
   display: flex;
   padding: 15px 25px;
-  background: rgba(0,0,0,0.2);
+  background: #FD7E14;
   border-radius: 8px;
-  font-weight: bold;
-  color: #ADB5BD;
+  font-weight: 800;
+  color: #1a1d21;
   text-transform: uppercase;
   font-size: 0.85rem;
   letter-spacing: 1px;
+  margin-bottom: 10px;
 }
 
 .col-img { width: 100px; }
