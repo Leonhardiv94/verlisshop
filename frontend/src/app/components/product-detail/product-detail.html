@@ -102,6 +102,7 @@
                 <button 
                   class="size-btn" 
                   [class.selected]="selectedTalla === talla"
+                  [disabled]="!isSizeInStock(talla)"
                   (click)="selectTalla(talla)">
                   {{ talla }}
                 </button>

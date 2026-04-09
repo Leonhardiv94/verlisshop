@@ -115,6 +115,12 @@ export class ProductDetail implements OnInit, OnDestroy {
     return this.product.inventario.reduce((acc, inv) => acc + inv.cantidad, 0);
   }
 
+  isSizeInStock(talla: string): boolean {
+    if (!this.product || !this.product.inventario) return false;
+    const item = this.product.inventario.find(i => i.talla === talla);
+    return item ? item.cantidad > 0 : false;
+  }
+
   triggerAuthModal(type: 'login' | 'register') {
     this.modalService.open(type);
   }

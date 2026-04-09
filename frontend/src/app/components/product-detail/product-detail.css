@@ -127,7 +127,15 @@
 }
 .size-btn:hover { background: #343A40; border-color: #ADB5BD; }
 .size-btn.selected { background: #FD7E14; border-color: #FD7E14; color: #fff; font-weight: bold; }
+.size-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  background: rgba(0,0,0,0.1);
+  border-color: #343A40;
+}
 .size-warn { display: block; color: #dc3545; margin-top: 8px; font-weight: 500; opacity: 0.9;}
+
 
 /* Quantity Selector */
 .p-quantity { margin-bottom: 30px; }
@@ -135,7 +143,7 @@
 .qty-btn { background: transparent; color: #ADB5BD; border: none; font-size: 1.5rem; font-weight: bold; width: 45px; height: 45px; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center;}
 .qty-btn:hover:not(:disabled) { background: #495057; color: white; }
 .qty-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.qty-input { width: 50px; height: 45px; background: transparent; border: none; border-left: 1px solid #495057; border-right: 1px solid #495057; color: white; text-align: center; font-size: 1.1rem; font-weight: bold; outline: none; -moz-appearance: textfield;}
+.qty-input { width: 50px; height: 45px; background: transparent; border: none; border-left: 1px solid #495057; border-right: 1px solid #495057; color: white; text-align: center; font-size: 1.1rem; font-weight: bold; outline: none; -moz-appearance: textfield; appearance: none;}
 .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 /* CTA Buttons */
@@ -146,7 +154,11 @@
 }
 .btn-cart:hover { background: #2b3035; }
 
-.btn-buy:hover { background: #e66f0d; box-shadow: 0 6px 20px rgba(253, 126, 20, 0.5); }
+.btn-buy {
+  flex: 1; min-width: 200px; background: #FD7E14; border: none; color: white;
+  padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
+}
+.btn-buy:hover:not(:disabled) { background: #e66f0d; box-shadow: 0 6px 20px rgba(253, 126, 20, 0.5); }
 
 .action-zone button:disabled {
   background: #343A40 !important;
@@ -158,12 +170,12 @@
   opacity: 0.7;
 }
 
-
 /* Unlogged states */
-.btn-login-action { flex: 1; background: #FD7E14; border: none; color: white; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.05rem; cursor: pointer; transition: 0.2s;}
-.btn-login-action:hover { background: #e66f0d; }
+.btn-login-action { flex: 1; background: #FD7E14; border: none; color: white; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.05rem; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3); }
+.btn-login-action:hover:not(:disabled) { background: #e66f0d; }
 .btn-reg-action { flex: 1; background: transparent; border: 1px solid #ADB5BD; color: white; padding: 15px; border-radius: 8px; font-weight: 500; font-size: 1.05rem; cursor: pointer; transition: 0.2s;}
-.btn-reg-action:hover { background: #343A40; }
+.btn-reg-action:hover:not(:disabled) { background: #343A40; }
+
 
 .benefits-mock { display: flex; flex-direction: column; gap: 10px; }
 .benefit { display: flex; align-items: center; gap: 10px; color: #ADB5BD; font-size: 0.9rem; }
