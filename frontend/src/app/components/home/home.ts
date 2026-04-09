@@ -79,6 +79,11 @@ export class Home implements OnInit, OnDestroy {
     this.router.navigate(['/producto', id]);
   }
 
+  getTotalStock(product: Product): number {
+    if (!product.inventario) return 0;
+    return product.inventario.reduce((acc, inv) => acc + inv.cantidad, 0);
+  }
+
   onAddToCart(product: Product) {
     console.log('Añadir al carro:', product.nombre);
     // TODO: Implement cart logic

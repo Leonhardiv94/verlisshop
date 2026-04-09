@@ -67,8 +67,15 @@
 
         <div class="p-code">CÓDIGO DE PRODUCTO: #{{ product.codigo || 'N/A' }}</div>
         
-        <div class="p-price">
-          ${{ product.precio | number:'1.0-0' }}
+        <div class="header-price-row">
+          <div class="p-price">
+            ${{ product.precio | number:'1.0-0' }}
+          </div>
+          @if (getTotalStock() > 0 && getTotalStock() < 3) {
+            <span class="stock-warning">Solo quedan {{ getTotalStock() }}</span>
+          } @else if (getTotalStock() === 0) {
+            <span class="stock-out">Agotado</span>
+          }
         </div>
 
         <div class="p-desc">

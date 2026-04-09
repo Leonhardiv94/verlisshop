@@ -23,7 +23,6 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   genero: {
-    // Genero implicito o definido
     type: String
   },
   material: {
@@ -43,9 +42,13 @@ const productSchema = new mongoose.Schema({
     default: []
   },
   tallas: {
-    type: [String], // "19", "21", "23", "36", etc.
+    type: [String],
     default: []
   },
+  inventario: [{
+    talla: String,
+    cantidad: { type: Number, default: 0 }
+  }],
   reviews: [{
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     userName: String,

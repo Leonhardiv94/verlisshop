@@ -9,7 +9,13 @@ exports.createProduct = async (req, res) => {
       return res.status(403).json({ error: 'Acceso denegado. Permisos de administrador requeridos.' });
     }
 
-    const newProduct = new Product(req.body);
+    const productData = { ...req.body };
+    // Inicializar inventario si hay tallas y no se mandó inventario previo
+    if (productData.tallas && productData.tallas.length > 0 && (!productData.inventario || productData.inventario.length === 0)) {
+      productData.inventario = productData.tallas.map(t => ({ talla: t, cantidad: 0 }));
+    }
+
+    const newProduct = new Product(productData);
     const savedProduct = await newProduct.save();
 
     res.status(201).json({ message: 'Producto creado exitosamente', product: savedProduct });
@@ -208,5 +214,28 @@ exports.updateReview = async (req, res) => {
     res.json({ message: 'Comentario actualizado', product });
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar comentario' });
+  }
+};
+
+exports.updateInventory = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ error: 'Acceso denegado. Permisos requeridos.' });
+    }
+
+    const { id } = req.params;
+    const { inventario } = req.body; // Esperamos un array [{ talla: string, cantidad: number }]
+
+    const product = await Product.findById(id);
+    if (!product) return res.status(404).json({ error: 'Producto no encontrado' });
+
+    product.inventario = inventario;
+    await product.save();
+
+    res.json({ message: 'Inventario actualizado correctamente', product });
+  } catch (error) {
+    console.error('Error updating inventory:', error);
+    res.status(500).json({ error: 'Error al actualizar el inventario' });
   }
 };

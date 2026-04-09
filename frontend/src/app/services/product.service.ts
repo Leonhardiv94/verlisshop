@@ -16,6 +16,11 @@ export interface Product {
   fotoPrincipal: string; // Base64
   fotosAdicionales: string[]; // Base64[]
   tallas: string[];
+  inventario?: Array<{
+    talla: string;
+    cantidad: number;
+    _id?: string;
+  }>;
   
   // Reviews
   reviews?: Array<{
@@ -99,5 +104,9 @@ export class ProductService {
 
   replyReview(productId: string, reviewId: string, reply: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${productId}/reply/${reviewId}`, { reply }, { headers: this.getHeaders() });
+  }
+
+  updateInventory(productId: string, inventario: any[]): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${productId}/inventory`, { inventario }, { headers: this.getHeaders() });
   }
 }

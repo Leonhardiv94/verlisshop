@@ -23,4 +23,7 @@ router.post('/:id/review', authMiddleware, productController.addReview);
 router.put('/:productId/review/:reviewId', authMiddleware, productController.updateReview);
 router.post('/:productId/reply/:reviewId', authMiddleware, productController.replyReview);
 
+// Inventario
+router.patch('/:id/inventory', authMiddleware, productController.updateInventory);
+
 module.exports = router;

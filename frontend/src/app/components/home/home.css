@@ -56,9 +56,44 @@
   transition: transform 0.3s;
 }
 
-/* Efecto normal de lupa si no hay segunda imagen */
 .product-card:hover .carousel-track.no-anim .product-img {
   transform: scale(1.05);
+}
+
+.stock-warning-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #dc3545;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 10;
+  animation: pulseWarning 2s infinite ease-in-out;
+}
+
+.sold-out-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 8px 15px;
+  border: 2px solid #ADB5BD;
+  font-weight: 800;
+  text-transform: uppercase;
+  z-index: 10;
+  border-radius: 4px;
+}
+
+@keyframes pulseWarning {
+  0% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.85; transform: scale(1); }
 }
 
 .card-body {

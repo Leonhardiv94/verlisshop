@@ -10,6 +10,7 @@ import { Checkout } from './components/checkout/checkout';
 import { MyOrders } from './components/my-orders/my-orders';
 import { SalesHistory } from './components/sales-history/sales-history';
 import { AdminUsers } from './components/admin-users/admin-users';
+import { Inventory } from './components/inventory/inventory';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'admin/modificar-producto', component: EditProduct },
   { path: 'admin/eliminar-producto', component: DeleteProduct },
   { path: 'admin/historial-ventas', component: SalesHistory },
-  { path: 'admin/gestion-usuarios', component: AdminUsers }
+  { path: 'admin/gestion-usuarios', component: AdminUsers },
+  { path: 'admin/inventario', component: Inventory }
 ];
 

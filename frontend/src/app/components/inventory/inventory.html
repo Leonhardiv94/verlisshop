@@ -1,0 +1,87 @@
+<div class="inventory-container">
+  <div class="header-box">
+    <h1 class="page-title">Gestión de Inventario</h1>
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        placeholder="Buscar por nombre o código..." 
+        class="search-input" />
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </div>
+  </div>
+
+  @if (notification.show) {
+    <div class="notification-toast" [class]="notification.type">
+      {{ notification.message }}
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loader-box">
+      <div class="spinner"></div>
+      <p>Cargando inventario...</p>
+    </div>
+  } @else {
+    <div class="inventory-list">
+      <!-- Legend / Header -->
+      <div class="inventory-header-row">
+        <div class="col-img">Producto</div>
+        <div class="col-info">Detalles</div>
+        <div class="col-stock">Stock por Talla</div>
+        <div class="col-total">Total</div>
+        <div class="col-action">Acción</div>
+      </div>
+
+      @for (product of filteredProducts; track product._id) {
+        <div class="inventory-card bounce-in">
+          <div class="col-img">
+            <div class="img-wrapper">
+              <img [src]="product.fotoPrincipal" [alt]="product.nombre">
+            </div>
+          </div>
+
+          <div class="col-info">
+            <h3 class="p-name">{{ product.nombre }}</h3>
+            <span class="p-code">Código: #{{ product.codigo }}</span>
+          </div>
+
+          <div class="col-stock">
+            @if (product.inventario && product.inventario.length > 0) {
+              <div class="sizes-grid">
+                @for (inv of product.inventario; track inv.talla) {
+                  <div class="size-item">
+                    <label>Talla {{ inv.talla }}</label>
+                    <input type="number" [(ngModel)]="inv.cantidad" min="0">
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="no-sizes">Sin tallas definidas</div>
+            }
+          </div>
+
+          <div class="col-total">
+            <div class="total-badge" [class.low-stock]="getTotalStock(product) < 3">
+              {{ getTotalStock(product) }}
+            </div>
+            <span class="total-label">Unidades</span>
+          </div>
+
+          <div class="col-action">
+            <button class="btn-update" (click)="updateStock(product)">
+              Actualizar
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (filteredProducts.length === 0) {
+        <div class="empty-state">
+          <h3>No se encontraron productos</h3>
+          <p>Intenta con otro término de búsqueda.</p>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -24,6 +24,15 @@
                   }
                 }
               </div>
+
+              <!-- Stock Warning Badge -->
+              @if (getTotalStock(product) > 0 && getTotalStock(product) < 3) {
+                <div class="stock-warning-badge">
+                  Solo quedan {{ getTotalStock(product) }}
+                </div>
+              } @else if (getTotalStock(product) === 0) {
+                <div class="sold-out-badge">Agotado</div>
+              }
             </div>
             <div class="card-body">
               <h3 class="product-name" [title]="product.nombre" (click)="goToDetail(product._id)">

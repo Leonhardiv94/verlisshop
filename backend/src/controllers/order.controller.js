@@ -26,6 +26,19 @@ const createOrder = async (req, res) => {
         tallaEscogida: item.tallaEscogida || item.size,
         cantidad: item.cantidad
       });
+
+      // --- Descontar Inventario ---
+      const tallaEscogida = item.tallaEscogida || item.size;
+      if (product.inventario && product.inventario.length > 0) {
+        const invItem = product.inventario.find(i => i.talla === tallaEscogida);
+        if (invItem) {
+          invItem.cantidad = Math.max(0, invItem.cantidad - item.cantidad);
+          // Marcar el array como modificado para que Mongoose guarde los cambios en el subdocumento
+          product.markModified('inventario');
+          await product.save();
+        }
+      }
+
     }
 
     // Generar código de orden nativo

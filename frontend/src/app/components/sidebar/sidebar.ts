@@ -58,6 +58,7 @@ export class Sidebar {
   private authSub: Subscription = new Subscription();
 
   adminOptions = [
+    { name: 'Inventario', link: '/admin/inventario' },
     { name: 'Historial de ventas', link: '/admin/historial-ventas' },
     { name: 'Gestión de Usuarios', link: '/admin/gestion-usuarios' },
     { name: 'Crear producto', link: '/admin/crear-producto' },

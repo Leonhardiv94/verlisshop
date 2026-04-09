@@ -110,6 +110,11 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  getTotalStock(): number {
+    if (!this.product || !this.product.inventario) return 0;
+    return this.product.inventario.reduce((acc, inv) => acc + inv.cantidad, 0);
+  }
+
   triggerAuthModal(type: 'login' | 'register') {
     this.modalService.open(type);
   }
