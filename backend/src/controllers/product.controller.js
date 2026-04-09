@@ -10,9 +10,16 @@ exports.createProduct = async (req, res) => {
     }
 
     const productData = { ...req.body };
-    // Inicializar inventario si hay tallas y no se mandó inventario previo
-    if (productData.tallas && productData.tallas.length > 0 && (!productData.inventario || productData.inventario.length === 0)) {
-      productData.inventario = productData.tallas.map(t => ({ talla: t, cantidad: 0 }));
+    // Inicializar inventario
+    if (productData.tallas && productData.tallas.length > 0) {
+      if (!productData.inventario || productData.inventario.length === 0) {
+        productData.inventario = productData.tallas.map(t => ({ talla: t, cantidad: 0 }));
+      }
+    } else {
+      // Si no hay tallas (bolsos, accesorios), creamos una entrada única/general
+      if (!productData.inventario || productData.inventario.length === 0) {
+        productData.inventario = [{ talla: 'Única', cantidad: 0 }];
+      }
     }
 
     const newProduct = new Product(productData);

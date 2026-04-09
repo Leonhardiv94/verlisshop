@@ -30,7 +30,13 @@ const createOrder = async (req, res) => {
       // --- Descontar Inventario ---
       const tallaEscogida = item.tallaEscogida || item.size;
       if (product.inventario && product.inventario.length > 0) {
-        const invItem = product.inventario.find(i => i.talla === tallaEscogida);
+        let invItem = product.inventario.find(i => i.talla === tallaEscogida);
+        
+        // Fallback para productos sin tallas (bolsos, etc) que tienen una entrada única 'Única' o similar
+        if (!invItem && product.inventario.length === 1) {
+          invItem = product.inventario[0];
+        }
+
         if (invItem) {
           invItem.cantidad = Math.max(0, invItem.cantidad - item.cantidad);
           // Marcar el array como modificado para que Mongoose guarde los cambios en el subdocumento

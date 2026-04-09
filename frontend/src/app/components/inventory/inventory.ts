@@ -26,7 +26,17 @@ export class Inventory implements OnInit {
     this.isLoading = true;
     this.productService.getProducts().subscribe({
       next: (data) => {
-        this.products = data;
+        this.products = data.map(p => {
+          // Si el producto no tiene inventario inicializado (productos viejos), lo inicializamos localmente
+          if (!p.inventario || p.inventario.length === 0) {
+            if (p.tallas && p.tallas.length > 0) {
+              p.inventario = p.tallas.map(t => ({ talla: t, cantidad: 0 }));
+            } else {
+              p.inventario = [{ talla: 'Única', cantidad: 0 }];
+            }
+          }
+          return p;
+        });
         this.isLoading = false;
       },
       error: () => (this.isLoading = false)
