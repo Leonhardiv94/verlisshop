@@ -146,11 +146,18 @@
 }
 .btn-cart:hover { background: #2b3035; }
 
-.btn-buy {
-  flex: 1; min-width: 200px; background: #FD7E14; border: none; color: white;
-  padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
-}
 .btn-buy:hover { background: #e66f0d; box-shadow: 0 6px 20px rgba(253, 126, 20, 0.5); }
+
+.action-zone button:disabled {
+  background: #343A40 !important;
+  color: #6C757D !important;
+  border-color: #495057 !important;
+  cursor: not-allowed;
+  box-shadow: none !important;
+  transform: none !important;
+  opacity: 0.7;
+}
+
 
 /* Unlogged states */
 .btn-login-action { flex: 1; background: #FD7E14; border: none; color: white; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.05rem; cursor: pointer; transition: 0.2s;}

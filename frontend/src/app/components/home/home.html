@@ -10,7 +10,7 @@
     } @else {
       <div class="products-grid">
         @for (product of products; track product._id) {
-          <div class="product-card">
+          <div class="product-card" [class.out-of-stock]="getTotalStock(product) === 0">
             <div class="card-img-wrapper" (mouseenter)="startCarousel(product)" (mouseleave)="stopCarousel(product)" (click)="goToDetail(product._id)" style="cursor: pointer;">
               <div class="carousel-track" 
                    [class.no-anim]="!product.fotosAdicionales || product.fotosAdicionales.length === 0"
@@ -52,10 +52,12 @@
               <!-- Botones basados en autenticacion -->
               <div class="card-actions">
                 @if (isLoggedIn) {
-                  <button class="btn btn-buy" (click)="goToDetail(product._id)">Comprar</button>
+                  <button class="btn btn-buy" (click)="goToDetail(product._id)" [disabled]="getTotalStock(product) === 0">
+                    {{ getTotalStock(product) === 0 ? 'Agotado' : 'Comprar' }}
+                  </button>
                 } @else {
-                  <button class="btn btn-login" (click)="triggerAuthModal('login')">Iniciar Sesión para Comprar</button>
-                  <button class="btn btn-register" (click)="triggerAuthModal('register')">Registrarse</button>
+                  <button class="btn btn-login" (click)="triggerAuthModal('login')" [disabled]="getTotalStock(product) === 0">Iniciar Sesión para Comprar</button>
+                  <button class="btn btn-register" (click)="triggerAuthModal('register')" [disabled]="getTotalStock(product) === 0">Registrarse</button>
                 }
               </div>
             </div>

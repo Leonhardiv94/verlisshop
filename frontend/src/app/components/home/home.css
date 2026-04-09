@@ -33,6 +33,18 @@
   box-shadow: 0 8px 20px rgba(253, 126, 20, 0.15);
 }
 
+.product-card.out-of-stock {
+  opacity: 0.6;
+  filter: grayscale(0.5);
+  pointer-events: none; /* Opcional: evita clicks si prefieres bloquear todo */
+}
+
+.product-card.out-of-stock:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+
 .card-img-wrapper {
   width: 100%;
   height: 160px;
@@ -184,14 +196,14 @@
   background-color: #e66f0d;
 }
 
-.btn-login {
-  background-color: #495057;
-  color: white;
+.btn:disabled {
+  background-color: #6C757D !important;
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
-.btn-login:hover {
-  background-color: #343A40;
-}
 
 .btn-register {
   background-color: transparent;
