@@ -18,3 +18,15 @@
 .autor strong {
   font-weight: 700;
 }
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 15px 10px;
+  }
+  .footer-text, .autor {
+    text-align: center;
+    line-height: 1.4;
+    font-size: 0.8rem;
+  }
+}
+

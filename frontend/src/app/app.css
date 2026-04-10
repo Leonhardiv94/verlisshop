@@ -23,9 +23,11 @@
 @media (max-width: 1024px) {
   .app-container {
     height: 100vh;
-    height: 100svh; /* Usar SVH para navegadores moviles modernos */
+    height: 100svh;
     overflow: hidden;
+    background-color: #212529; /* Mascarar posibles lineas blancas de redondeo */
   }
+
   
   .app-body {
     flex-direction: column;
