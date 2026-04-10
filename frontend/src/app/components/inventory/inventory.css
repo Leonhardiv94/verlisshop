@@ -217,10 +217,22 @@
 .bounce-in { animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes bounceIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .inventory-header-row { display: none; }
-  .inventory-card { flex-direction: column; text-align: center; gap: 20px; }
-  .col-action { text-align: center; width: 100%; }
+  .inventory-card { 
+    flex-direction: column; 
+    text-align: center; 
+    gap: 20px; 
+    padding: 15px;
+    width: 100%;
+  }
+  .col-img, .col-info, .col-stock, .col-total, .col-action {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 10px 0 !important;
+  }
   .search-box { width: 100%; margin-top: 15px; }
   .header-box { flex-direction: column; align-items: flex-start; }
+  .inventory-container { padding: 10px; }
 }
+

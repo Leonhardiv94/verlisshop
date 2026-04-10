@@ -13,6 +13,33 @@
 .main {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 30px;
   background-color: #FFFFFF;
 }
+
+/* ============================================================
+   RESPONSIVIDAD DEL CUERPO (TABLET Y CELULAR)
+   ============================================================ */
+@media (max-width: 1024px) {
+  .app-container {
+    height: 100vh;
+    height: 100svh; /* Usar SVH para navegadores moviles modernos */
+    overflow: hidden;
+  }
+  
+  .app-body {
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .main {
+    padding: 15px;
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+

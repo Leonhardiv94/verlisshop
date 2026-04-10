@@ -12,10 +12,24 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-  gap: 16px;
-  justify-content: start;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
+
+@media (max-width: 1024px) {
+  .products-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 8px;
+  }
+}
+
 
 .product-card {
   background-color: #FFFFFF;
@@ -210,8 +224,16 @@
   color: #6C757D;
   border: 1px solid #CED4DA;
 }
-
 .btn-register:hover {
   background-color: #F8F9FA;
   color: #495057;
 }
+
+
+@media (max-width: 1024px) {
+  .product-name { font-size: 0.9rem !important; }
+  .product-price { font-size: 1.1rem !important; }
+  .card-img-wrapper { height: 160px; }
+  .btn { padding: 8px !important; font-size: 0.8rem !important; }
+}
+
