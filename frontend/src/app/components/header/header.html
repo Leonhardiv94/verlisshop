@@ -1,6 +1,8 @@
 <header class="header">
   <div class="section1">
-    <h1 [class.golden-title]="isLoggedIn">VerlisShop</h1>
+    <div class="logo-box" (click)="navigateToHome()" title="VIRVER - Inicio">
+      <img src="/assets/logo-virver.png" alt="VIRVER Logo" class="logo-img" />
+    </div>
   </div>
   <div class="section2">
     @if (!isLoggedIn) {

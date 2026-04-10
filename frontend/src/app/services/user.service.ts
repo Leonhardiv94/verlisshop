@@ -25,7 +25,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   private getHeaders() {
-    const token = localStorage.getItem('verlisshop_token');
+    const token = localStorage.getItem('virver_token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 

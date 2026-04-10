@@ -20,13 +20,13 @@ app.use('/api', routes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ message: 'Bienvenido a VerlisShop API' });
+  res.json({ message: 'Bienvenido a VIRVER API' });
 });
 
 // Connect to database and start server
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`Servidor VerlisShop corriendo en http://localhost:${PORT}`);
+    console.log(`Servidor VIRVER corriendo en http://localhost:${PORT}`);
   });
 }).catch(err => {
   console.error('No se pudo conectar a la base de datos:', err);

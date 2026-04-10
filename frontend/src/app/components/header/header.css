@@ -10,18 +10,22 @@
   flex-shrink: 0;
 }
 
-.section1 h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-family: inherit;
-  font-weight: 600;
-  transition: all 0.3s ease;
+.logo-box {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-.section1 h1.golden-title {
-  color: #FFDF00;
-  text-shadow: 0 0 10px rgba(255, 223, 0, 0.6), 0 0 20px rgba(255, 223, 0, 0.4);
-  transform: scale(1.05);
+.logo-img {
+  height: 60px;
+  width: auto;
+  transition: filter 0.3s ease, transform 0.3s ease;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.logo-box:hover .logo-img {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 8px rgba(253, 126, 20, 0.3));
 }
 
 .section2 {
@@ -311,9 +315,12 @@
     padding: 0 10px;
   }
   
-  .section1 h1 {
-    font-size: 1.2rem !important;
-    margin-left: 35px !important;
+  .logo-box {
+    margin-left: 40px;
+  }
+
+  .logo-img {
+    height: 45px;
   }
 
   .section2 {
@@ -371,7 +378,7 @@
 
 
 @media (min-width: 481px) and (max-width: 1024px) {
-  .section1 h1 {
+  .logo-box {
     margin-left: 60px !important;
   }
 }

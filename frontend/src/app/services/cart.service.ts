@@ -23,12 +23,12 @@ export class CartService {
   }
 
   private saveCart() {
-    localStorage.setItem('verlisshop_cart', JSON.stringify(this.cartItems));
+    localStorage.setItem('virver_cart', JSON.stringify(this.cartItems));
     this.cartSubject.next([...this.cartItems]);
   }
 
   private loadCart() {
-    const saved = localStorage.getItem('verlisshop_cart');
+    const saved = localStorage.getItem('virver_cart');
     if (saved) {
       this.cartItems = JSON.parse(saved);
       this.cartSubject.next([...this.cartItems]);

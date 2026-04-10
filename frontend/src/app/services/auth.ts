@@ -17,8 +17,8 @@ interface AuthResponse {
 })
 export class Auth {
   private apiUrl = 'http://localhost:3000/api/auth';
-  private tokenKey = 'verlisshop_token';
-  private userKey = 'verlisshop_user';
+  private tokenKey = 'virver_token';
+  private userKey = 'virver_user';
 
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
