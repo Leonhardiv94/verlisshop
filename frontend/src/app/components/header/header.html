@@ -5,8 +5,12 @@
   <div class="section2">
     @if (!isLoggedIn) {
       <button class="nav-btn" (click)="navigateToHome()">Inicio</button>
-      <button class="login-btn" (click)="onLogin()">Iniciar Sesión</button>
+      <button class="login-btn" (click)="onLogin()">
+        <span class="full-text">Iniciar Sesión</span>
+        <span class="short-text">Inicio</span>
+      </button>
       <button class="register-btn" (click)="onRegister()">Registrarse</button>
+
     } @else {
       @if (currentUser?.role === 'admin') {
         <button class="nav-btn" (click)="navigateToHome()">Inicio</button>

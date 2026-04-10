@@ -12,23 +12,24 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+  justify-content: center;
+  justify-items: center; /* Centrar cada tarjeta dentro de su celda */
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .products-grid { 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+    gap: 15px;
+    justify-items: center;
   }
 }
 
-@media (max-width: 480px) {
-  .products-grid { 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 8px;
-  }
-}
+
 
 
 .product-card {

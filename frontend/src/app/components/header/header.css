@@ -303,3 +303,37 @@
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+/* Responsive Text Helper */
+.short-text { display: none; }
+
+@media (max-width: 480px) {
+  .header {
+    height: 70px;
+    padding: 0 10px;
+  }
+  
+  .section1 h1 {
+    font-size: 1.3rem !important;
+    margin-left: 40px !important; /* Espacio ajustado para el boton mas pequeño */
+  }
+
+
+  .section2 {
+    gap: 4px;
+  }
+
+  .section2 button {
+    padding: 6px 8px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .full-text { display: none; }
+  .short-text { display: inline; }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+  .section1 h1 {
+    margin-left: 60px !important; /* Espacio para el boton hamburguesa en Tablet */
+  }
+}
+
