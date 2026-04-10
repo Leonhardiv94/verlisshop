@@ -55,7 +55,9 @@ export class Sidebar {
   activeLink: string = '';
   currentUser: any = null;
   isAdminMenuOpen = false;
+  isMobileMenuOpen = false;
   private authSub: Subscription = new Subscription();
+
 
   adminOptions = [
     { name: 'Inventario', link: '/admin/inventario' },
@@ -99,13 +101,26 @@ export class Sidebar {
     }
   }
 
+
+
   filterSubcategory(catName: string, subName: string) {
     this.activeLink = subName;
+    this.closeMobileMenu();
     this.router.navigate(['/'], { queryParams: { categoria: catName, subcategoria: subName } });
   }
 
   setActiveLink(link: string) {
     this.activeLink = link;
+    this.closeMobileMenu();
     this.router.navigate([link]);
   }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
 }
+

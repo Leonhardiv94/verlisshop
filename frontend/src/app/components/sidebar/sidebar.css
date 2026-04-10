@@ -83,3 +83,67 @@
   from { transform: translateY(-10px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+/* ============================================================
+   ESTILOS MOBILE-FIRST PARA SIDEBAR
+   ============================================================ */
+.mobile-burger-btn {
+  display: none; /* Oculto en PC */
+}
+
+@media (max-width: 1024px) {
+  :host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 10000;
+  }
+
+  /* BOTÓN REAL FIJO */
+  .mobile-burger-btn {
+    display: flex;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: 50px;
+    height: 50px;
+    background-color: #FD7E14;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 10002;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-burger-btn:active {
+    transform: scale(0.9);
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 260px;
+    height: 100vh;
+    padding-top: 85px; /* Evitar que el botón tape el título */
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    background-color: rgba(52, 58, 64, 0.98);
+    backdrop-filter: blur(8px);
+    z-index: 10001;
+  }
+
+  /* Clase activa para abrir */
+  .sidebar.mobile-open {
+    left: 0;
+  }
+}
+
+
