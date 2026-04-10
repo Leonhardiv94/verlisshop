@@ -202,11 +202,295 @@
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-@media (max-width: 900px) {
-  .detail-card { grid-template-columns: 1fr; }
-  .p-title { font-size: 1.8rem; }
-  .action-zone { flex-direction: column; }
+/* --- RESPONSIVIDAD REDISEÑADA (TABLET Y MÓVIL) --- */
+
+/* Tablet Grande / Laptop Pequeño */
+@media (max-width: 1024px) {
+  .product-detail-container {
+    padding: 30px 20px;
+    max-width: 100%;
+  }
+  
+  .detail-card {
+    gap: 30px;
+    padding: 25px;
+  }
 }
+
+/* Tablet / Móvil Horizontal */
+@media (max-width: 900px) {
+  .product-detail-container {
+    padding: 20px 15px;
+  }
+
+  .detail-card {
+    grid-template-columns: 1fr; /* Layout vertical: Galería arriba, Info abajo */
+    gap: 35px;
+    padding: 25px;
+  }
+
+  .gallery-col {
+    width: 100%;
+    order: 1; /* Asegurar que la galería esté arriba */
+  }
+
+  .main-img-box {
+    max-height: 450px;
+    height: 400px;
+    aspect-ratio: auto;
+  }
+
+  .info-col {
+    width: 100%;
+    order: 2; /* Información abajo */
+  }
+
+  .p-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .p-category, .p-code {
+    text-align: center;
+  }
+
+  .avg-rating-box {
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .header-price-row {
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .p-desc {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .p-specs {
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .sizes-title {
+    text-align: center;
+  }
+
+  .sizes-grid {
+    justify-content: center;
+  }
+
+  .p-quantity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .action-zone {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .btn-cart, .btn-buy, .btn-login-action, .btn-reg-action {
+    width: 100%;
+    min-width: unset;
+    padding: 18px; /* Un poco más grande para facilitar el toque en móvil */
+  }
+
+  .benefits-mock {
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #343A40;
+  }
+
+  .reviews-section {
+    padding: 30px 20px;
+    margin-top: 30px;
+  }
+}
+
+/* Celular Estándar */
+@media (max-width: 600px) {
+  .detail-card {
+    padding: 20px 15px;
+    border-radius: 12px;
+    gap: 25px;
+  }
+
+  .main-img-box {
+    height: 320px;
+  }
+
+  .thumb-row img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .p-title {
+    font-size: 1.7rem;
+  }
+
+  .p-price {
+    font-size: 2.2rem;
+  }
+
+  .p-price::before {
+    font-size: 0.85rem;
+    margin-top: 8px;
+  }
+
+  .spec-item {
+    font-size: 0.9rem;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .rev-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .u-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rev-date {
+    font-size: 0.8rem;
+  }
+}
+
+/* Celular Pequeño (450px) */
+@media (max-width: 450px) {
+  .product-detail-container {
+    padding: 10px;
+  }
+
+  .detail-card {
+    padding: 15px 10px;
+    gap: 20px;
+  }
+
+  .main-img-box {
+    height: 280px;
+  }
+
+  .p-title {
+    font-size: 1.5rem;
+  }
+
+  .p-price {
+    font-size: 1.95rem;
+  }
+
+  .p-desc {
+    font-size: 0.95rem;
+  }
+
+  .p-specs {
+    padding: 12px;
+    font-size: 0.85rem;
+    gap: 10px;
+  }
+
+  .size-btn {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  .qty-stepper {
+    transform: scale(0.95);
+  }
+
+  .btn-cart, .btn-buy, .btn-login-action, .btn-reg-action {
+    padding: 16px;
+    font-size: 1.05rem;
+  }
+
+  .benefit {
+    font-size: 0.85rem;
+  }
+}
+
+/* Pantallas Extra Pequeñas (350px - iPhone SE o similares) */
+@media (max-width: 360px) {
+  .detail-card {
+    gap: 15px;
+  }
+
+  .main-img-box {
+    height: 240px;
+  }
+
+  .thumb-row img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .p-title {
+    font-size: 1.35rem;
+  }
+
+  .p-price {
+    font-size: 1.7rem;
+  }
+
+  .p-price::before {
+    font-size: 0.75rem;
+  }
+
+  .sizes-grid {
+    gap: 5px;
+  }
+
+  .size-btn {
+    padding: 10px;
+    min-width: 45px;
+    font-size: 0.9rem;
+  }
+
+  .p-category {
+    font-size: 0.75rem;
+  }
+
+  .review-card {
+    padding: 15px;
+  }
+
+  .rev-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .u-name {
+    font-size: 1rem;
+  }
+
+  .rev-comment {
+    font-size: 0.95rem;
+  }
+
+  .transparency-alert {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+}
+
+
 
 /* --- REVIEWS SYSTEM --- */
 .empty-reviews { text-align: center; color: #6C757D; padding: 40px; background: #2b3035; border-radius: 12px; border: 1px dashed #495057; }
